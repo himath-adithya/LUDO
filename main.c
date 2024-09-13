@@ -5,9 +5,7 @@
 
 int main() {
 
-  //seed = 666;
-  // seed = 17;
-  seed = 48;
+  seed = time(NULL);
   srand(seed);
 
   initialization();
