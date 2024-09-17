@@ -145,7 +145,6 @@ typedef struct {
   StandardCell *endStandardCell;
   HomeStraightCell *homeStraightCell;
   Home *home;
-  // properties of pieces in the endStandardCell
   Piece *playerPiece; 
   Block *playerBlock;
   Piece *enemyPiece;
@@ -156,10 +155,10 @@ typedef struct {
   char isFromBlock;
 } Move;
   // TODO: MOVE can be revised to use less members
-  // void* element;
+  // void *element;
   // void *location;
   // char locationType;
-  // void* destElement;
+  // void *destElement;
   // void *destLocation;
   // char destLocationType;
 
@@ -184,8 +183,8 @@ extern short diceRolledValue;
 extern short currentTurnColor;
 extern short winnerCount;
 extern short moveIndex;
-extern char *coinTossNames[];
-extern char *movingDirectionNames[];
+extern const char *coinTossNames[];
+extern const char *movingDirectionNames[];
 extern char gameInProgress;
 extern char isBreakingDown;
 

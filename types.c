@@ -22,10 +22,10 @@ long count = 1;
 time_t seed = 0;
 long colorCycleCount = 0;
 short diceRolledValue;
-short currentTurnColor = 0; // red: 0 ; green: 1 ; yellow: 2 ; blue: 3
+short currentTurnColor = 0; /* red: 0 ; green: 1 ; yellow: 2 ; blue: 3 */
 short winnerCount = 0;
 short moveIndex = 0;
-char *coinTossNames[] = {"heads", "tails"};
-char *movingDirectionNames[] = {"clockwise", "counter-clockwise"};
+const char *coinTossNames[] = {"heads", "tails"};
+const char *movingDirectionNames[] = {"clockwise", "counter-clockwise"};
 char gameInProgress = FALSE;
 char isBreakingDown = FALSE;
