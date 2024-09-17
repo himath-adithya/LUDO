@@ -25,8 +25,11 @@ void initialization() {
       p->pieceNum = piece;
       p->locationType = BASE;
       p->location = 0;
-      p->startingCell = 13 * ((color + 2) % COLOR_TOTAL) + 2; // red: 28; green: 41; yellow: 2; blue: 15;
-      p->approach = 13 * ((color + 2) % COLOR_TOTAL);         // red: 26; green: 39; yellow: 0; blue: 13;
+      p->startingCell = 13 * ((color + 2) % COLOR_TOTAL) +
+                        2; /* red: 28; green: 41; yellow: 2; blue: 15; */
+      p->approach =
+          13 * ((color + 2) %
+                COLOR_TOTAL); /* red: 26; green: 39; yellow: 0; blue: 13; */
       p->capturedPieceCount = 0;
       p->approachPassCount = 0;
       p->blockNum = NULL;
@@ -109,7 +112,8 @@ void briefEffect(void *element, short elementType) {
   if (elementType == 0 && ((Piece *)element)->blockNum == NULL) {
     Piece *p = (Piece *)element;
 
-    printf("%s's %s is movement-restricted and has rolled three consecutively. Teleporting %s to base.\n",
+    printf("%s's %s is movement-restricted and has rolled three consecutively. "
+           "Teleporting %s to base.\n",
            p->color->colorName, p->name, p->name);
 
     if (p->locationType == BASE) {
@@ -125,6 +129,7 @@ void briefEffect(void *element, short elementType) {
     } else if (p->locationType == HOME) {
       printf("Piece is already at home. Can't take effect.");
     }
+
   } else if (elementType == 1 && ((Block *)element)->pieceCount > 0) {
     Block *b = (Block *)element;
     printf("%s's block of %d is movement-restricted and has rolled three "
@@ -175,7 +180,8 @@ void checkBriefEffect(short diceRolledValue) {
       }
     }
 
-    if (b->pieceCount != 0 && b->mysteryEffect == 1 && b->whileInBriefConsecutiveThrees > 1) {
+    if (b->pieceCount != 0 && b->mysteryEffect == 1 &&
+        b->whileInBriefConsecutiveThrees > 1) {
       briefEffect(b, 1);
     }
   }
@@ -216,8 +222,10 @@ void firstToRollPlayerSelection() {
   }
 
   currentTurnColor = maxRolledValueIndex;
-  printf("%s player has the highest roll and will begin the game.\n", colors[currentTurnColor].colorName);
-  printf("The order of a single round is %s, %s, %s, and %s.\n\n", colors[currentTurnColor].colorName,
+  printf("%s player has the highest roll and will begin the game.\n",
+         colors[currentTurnColor].colorName);
+  printf("The order of a single round is %s, %s, %s, and %s.\n\n",
+         colors[currentTurnColor].colorName,
          colors[(currentTurnColor + 1) % COLOR_TOTAL].colorName,
          colors[(currentTurnColor + 2) % COLOR_TOTAL].colorName,
          colors[(currentTurnColor + 3) % COLOR_TOTAL].colorName);
@@ -300,14 +308,17 @@ Check nextCellsInspection(Piece *piece, Block *block, short moveValue) {
     for (short cell = 1; cell <= moveValue; cell++) {
 
       if (piece->movingDirection == COUNTER_CLOCKWISE) {
-        nextLocation = (piece->location - cell + MAX_STANDARD_CELLS) % MAX_STANDARD_CELLS;
+        nextLocation =
+            (piece->location - cell + MAX_STANDARD_CELLS) % MAX_STANDARD_CELLS;
       } else {
-        nextLocation = (piece->location + cell + MAX_STANDARD_CELLS) % MAX_STANDARD_CELLS;
+        nextLocation =
+            (piece->location + cell + MAX_STANDARD_CELLS) % MAX_STANDARD_CELLS;
       }
 
       StandardCell *nextCell = &standardArea[nextLocation];
 
-      if (nextCell->block != NULL && nextCell->block->color->colorNum != currentTurnColor) {
+      if (nextCell->block != NULL &&
+          nextCell->block->color->colorNum != currentTurnColor) {
         check.doesPieceOrBlockMeetBlock = TRUE;
         if (piece->movingDirection == COUNTER_CLOCKWISE) {
           check.distanceToBlock = -cell;
@@ -322,9 +333,11 @@ Check nextCellsInspection(Piece *piece, Block *block, short moveValue) {
     for (short cell = 0; cell < moveValue; cell++) {
 
       if (piece->movingDirection == COUNTER_CLOCKWISE) {
-        nextLocation = (piece->location - cell + MAX_STANDARD_CELLS) % MAX_STANDARD_CELLS;
+        nextLocation =
+            (piece->location - cell + MAX_STANDARD_CELLS) % MAX_STANDARD_CELLS;
       } else {
-        nextLocation = (piece->location + cell + MAX_STANDARD_CELLS) % MAX_STANDARD_CELLS;
+        nextLocation =
+            (piece->location + cell + MAX_STANDARD_CELLS) % MAX_STANDARD_CELLS;
       }
 
       if (piece->approach == nextLocation) {
@@ -345,14 +358,19 @@ Check nextCellsInspection(Piece *piece, Block *block, short moveValue) {
     for (short cell = 1; cell <= moveBlockValue; cell++) {
 
       if (block->movingDirection == COUNTER_CLOCKWISE) {
-        nextLocation = (block->pieces[0]->location - cell + MAX_STANDARD_CELLS) % MAX_STANDARD_CELLS;
+        nextLocation =
+            (block->pieces[0]->location - cell + MAX_STANDARD_CELLS) %
+            MAX_STANDARD_CELLS;
       } else {
-        nextLocation = (block->pieces[0]->location + cell + MAX_STANDARD_CELLS) % MAX_STANDARD_CELLS;
+        nextLocation =
+            (block->pieces[0]->location + cell + MAX_STANDARD_CELLS) %
+            MAX_STANDARD_CELLS;
       }
 
       StandardCell *nextCell = &standardArea[nextLocation];
 
-      if (nextCell->block != NULL && nextCell->block->color->colorNum != currentTurnColor) {
+      if (nextCell->block != NULL &&
+          nextCell->block->color->colorNum != currentTurnColor) {
         check.doesPieceOrBlockMeetBlock = TRUE;
         if (block->movingDirection == COUNTER_CLOCKWISE) {
           check.distanceToBlock = -cell;
@@ -370,9 +388,13 @@ Check nextCellsInspection(Piece *piece, Block *block, short moveValue) {
 
     for (short cell = 0; cell < moveBlockValue; cell++) {
       if (block->movingDirection == COUNTER_CLOCKWISE) {
-        nextLocation = (block->pieces[0]->location - cell + MAX_STANDARD_CELLS) % MAX_STANDARD_CELLS;
+        nextLocation =
+            (block->pieces[0]->location - cell + MAX_STANDARD_CELLS) %
+            MAX_STANDARD_CELLS;
       } else {
-        nextLocation = (block->pieces[0]->location + cell + MAX_STANDARD_CELLS) % MAX_STANDARD_CELLS;
+        nextLocation =
+            (block->pieces[0]->location + cell + MAX_STANDARD_CELLS) %
+            MAX_STANDARD_CELLS;
       }
 
       if (block->pieces[0]->approach == nextLocation) {
@@ -384,7 +406,8 @@ Check nextCellsInspection(Piece *piece, Block *block, short moveValue) {
   }
 
   if (check.doesPieceOrBlockMeetBlock) {
-    if (check.distanceToBlock > check.distanceToApproach && check.doesPieceOrBlockPassApproach) {
+    if (check.distanceToBlock > check.distanceToApproach &&
+        check.doesPieceOrBlockPassApproach) {
       check.doesPieceOrBlockPassApproach = TRUE;
     } else {
       check.doesPieceOrBlockPassApproach = FALSE;
@@ -394,7 +417,8 @@ Check nextCellsInspection(Piece *piece, Block *block, short moveValue) {
   return check;
 }
 
-void createBlock(Piece *originPiece, Piece *targetPiece, void *targetCell, short cellLocationType) {
+void createBlock(Piece *originPiece, Piece *targetPiece, void *targetCell,
+                 short cellLocationType) {
   Piece *op = originPiece;
   Piece *tp = targetPiece;
   Block *b = NULL;
@@ -406,151 +430,156 @@ void createBlock(Piece *originPiece, Piece *targetPiece, void *targetCell, short
   }
 
   switch (cellLocationType) {
-    case STANDARD_AREA: {
-      StandardCell *stc = (StandardCell *)targetCell;
-      op->blockNum = &b->blockNum;
-      op->location = tp->location;
-      op->locationType = tp->locationType;
-      tp->blockNum = &b->blockNum;
-      char movingDirection = longestMovingPath(stc->cellIndex, op->approach);
-      b->movingDirection = movingDirection;
-      b->pieceCount = 2;
-      b->pieces[0] = tp;
-      b->pieces[1] = op;
-      stc->block = b;
-      stc->piece = NULL;
-      stc->pieceCount = 2;
-      break;
-    }
-    case HOME_STRAIGHT: {
-      HomeStraightCell *htc = (HomeStraightCell *)targetCell;
-      op->blockNum = &b->blockNum;
-      op->location = tp->location;
-      op->locationType = tp->locationType;
-      tp->blockNum = &b->blockNum;
-      b->movingDirection = CLOCKWISE;
-      b->pieceCount = 2;
-      b->pieces[0] = tp;
-      b->pieces[1] = op;
-      htc->block = b;
-      htc->piece = NULL;
-      htc->pieceCount = 2;
-      break;
-    }
-    default:
-      break;
+  case STANDARD_AREA: {
+    StandardCell *stc = (StandardCell *)targetCell;
+    op->blockNum = &b->blockNum;
+    op->location = tp->location;
+    op->locationType = tp->locationType;
+    tp->blockNum = &b->blockNum;
+    char movingDirection = longestMovingPath(stc->cellIndex, op->approach);
+    b->movingDirection = movingDirection;
+    b->pieceCount = 2;
+    b->pieces[0] = tp;
+    b->pieces[1] = op;
+    stc->block = b;
+    stc->piece = NULL;
+    stc->pieceCount = 2;
+    break;
+  }
+  case HOME_STRAIGHT: {
+    HomeStraightCell *htc = (HomeStraightCell *)targetCell;
+    op->blockNum = &b->blockNum;
+    op->location = tp->location;
+    op->locationType = tp->locationType;
+    tp->blockNum = &b->blockNum;
+    b->movingDirection = CLOCKWISE;
+    b->pieceCount = 2;
+    b->pieces[0] = tp;
+    b->pieces[1] = op;
+    htc->block = b;
+    htc->piece = NULL;
+    htc->pieceCount = 2;
+    break;
+  }
+  default:
+    break;
   }
 }
 
-void expandBlockByPiece(Piece *originPiece, Block *targetBlock, void *targetCell, short cellLocationType) {
+void expandBlockByPiece(Piece *originPiece, Block *targetBlock,
+                        void *targetCell, short cellLocationType) {
   Piece *op = originPiece;
   Block *tb = targetBlock;
 
   switch (cellLocationType) {
-    case STANDARD_AREA: {
-      StandardCell *stc = (StandardCell *)targetCell;
-      op->blockNum = &tb->blockNum;
-      op->location = tb->pieces[0]->location;
-      op->locationType = tb->pieces[0]->locationType;
-      char movingDirection = longestMovingPath(stc->cellIndex, tb->pieces[0]->approach);
-      tb->movingDirection = movingDirection;
-      tb->pieces[tb->pieceCount] = op;
-      tb->pieceCount++;
-      stc->pieceCount++;
-      break;
-    }
-    case HOME_STRAIGHT: {
-      HomeStraightCell *htc = (HomeStraightCell *)targetCell;
-      op->blockNum = &tb->blockNum;
-      op->location = tb->pieces[0]->location;
-      op->locationType = tb->pieces[0]->locationType;
-      tb->movingDirection = CLOCKWISE;
-      tb->pieces[tb->pieceCount] = op;
-      tb->pieceCount++;
-      htc->pieceCount++;
-      break;
-    }
-    default:
-      break;
+  case STANDARD_AREA: {
+    StandardCell *stc = (StandardCell *)targetCell;
+    op->blockNum = &tb->blockNum;
+    op->location = tb->pieces[0]->location;
+    op->locationType = tb->pieces[0]->locationType;
+    char movingDirection =
+        longestMovingPath(stc->cellIndex, tb->pieces[0]->approach);
+    tb->movingDirection = movingDirection;
+    tb->pieces[tb->pieceCount] = op;
+    tb->pieceCount++;
+    stc->pieceCount++;
+    break;
+  }
+  case HOME_STRAIGHT: {
+    HomeStraightCell *htc = (HomeStraightCell *)targetCell;
+    op->blockNum = &tb->blockNum;
+    op->location = tb->pieces[0]->location;
+    op->locationType = tb->pieces[0]->locationType;
+    tb->movingDirection = CLOCKWISE;
+    tb->pieces[tb->pieceCount] = op;
+    tb->pieceCount++;
+    htc->pieceCount++;
+    break;
+  }
+  default:
+    break;
   }
 }
 
-void expandPieceByBlock(Block *originblock, Piece *targetPiece, void *targetCell, short cellLocationType) {
+void expandPieceByBlock(Block *originblock, Piece *targetPiece,
+                        void *targetCell, short cellLocationType) {
   Block *ob = originblock;
   Piece *tp = targetPiece;
 
   switch (cellLocationType) {
-    case STANDARD_AREA: {
-      StandardCell *stc = (StandardCell *)targetCell;
-      char movingDirection = longestMovingPath(stc->cellIndex, tp->approach);
-      ob->movingDirection = movingDirection;
-      for (short piece = 0; piece < ob->pieceCount; piece++) {
-        ob->pieces[piece]->location = stc->cellIndex;
-        ob->pieces[piece]->locationType = STANDARD_AREA;
-      }
-      ob->pieces[ob->pieceCount] = tp;
-      ob->pieceCount++;
-      tp->blockNum = &ob->blockNum;
-      stc->block = ob;
-      stc->piece = NULL;
-      stc->pieceCount = ob->pieceCount;
-      break;
+  case STANDARD_AREA: {
+    StandardCell *stc = (StandardCell *)targetCell;
+    char movingDirection = longestMovingPath(stc->cellIndex, tp->approach);
+    ob->movingDirection = movingDirection;
+    for (short piece = 0; piece < ob->pieceCount; piece++) {
+      ob->pieces[piece]->location = stc->cellIndex;
+      ob->pieces[piece]->locationType = STANDARD_AREA;
     }
-    case HOME_STRAIGHT: {
-      HomeStraightCell *htc = (HomeStraightCell *)targetCell;
-      ob->movingDirection = CLOCKWISE;
-      for (short piece = 0; piece < ob->pieceCount; piece++) {
-        ob->pieces[piece]->location = htc->cellIndex;
-        ob->pieces[piece]->locationType = HOME_STRAIGHT;
-      }
-      ob->pieces[ob->pieceCount] = tp;
-      ob->pieceCount++;
-      tp->blockNum = &ob->blockNum;
-      htc->block = ob;
-      htc->piece = NULL;
-      htc->pieceCount = ob->pieceCount;
+    ob->pieces[ob->pieceCount] = tp;
+    ob->pieceCount++;
+    tp->blockNum = &ob->blockNum;
+    stc->block = ob;
+    stc->piece = NULL;
+    stc->pieceCount = ob->pieceCount;
+    break;
+  }
+  case HOME_STRAIGHT: {
+    HomeStraightCell *htc = (HomeStraightCell *)targetCell;
+    ob->movingDirection = CLOCKWISE;
+    for (short piece = 0; piece < ob->pieceCount; piece++) {
+      ob->pieces[piece]->location = htc->cellIndex;
+      ob->pieces[piece]->locationType = HOME_STRAIGHT;
     }
-    default:
-      break;
+    ob->pieces[ob->pieceCount] = tp;
+    ob->pieceCount++;
+    tp->blockNum = &ob->blockNum;
+    htc->block = ob;
+    htc->piece = NULL;
+    htc->pieceCount = ob->pieceCount;
+  }
+  default:
+    break;
   }
 }
 
-void expandBlockByBlock(Block *originBlock, Block *targetBlock, void *targetCell, short cellLocationType) {
+void expandBlockByBlock(Block *originBlock, Block *targetBlock,
+                        void *targetCell, short cellLocationType) {
   Block *ob = originBlock;
   Block *tb = targetBlock;
 
   switch (cellLocationType) {
-    case STANDARD_AREA: {
-      StandardCell *stc = (StandardCell *)targetCell;
-      char movingDirection = longestMovingPath(stc->cellIndex, tb->pieces[0]->approach);
-      tb->movingDirection = movingDirection;
-      for (short piece = 0; piece < ob->pieceCount; piece++) {
-        ob->pieces[piece]->blockNum = &tb->blockNum;
-        ob->pieces[piece]->location = tb->pieces[0]->location;
-        ob->pieces[piece]->locationType = STANDARD_AREA;
-        tb->pieces[tb->pieceCount + piece] = ob->pieces[piece];
-      }
-      tb->pieceCount += ob->pieceCount;
-      resetBlock(ob);
-      stc->pieceCount = tb->pieceCount;
-      break;
+  case STANDARD_AREA: {
+    StandardCell *stc = (StandardCell *)targetCell;
+    char movingDirection =
+        longestMovingPath(stc->cellIndex, tb->pieces[0]->approach);
+    tb->movingDirection = movingDirection;
+    for (short piece = 0; piece < ob->pieceCount; piece++) {
+      ob->pieces[piece]->blockNum = &tb->blockNum;
+      ob->pieces[piece]->location = tb->pieces[0]->location;
+      ob->pieces[piece]->locationType = STANDARD_AREA;
+      tb->pieces[tb->pieceCount + piece] = ob->pieces[piece];
     }
-    case HOME_STRAIGHT: {
-      HomeStraightCell *htc = (HomeStraightCell *)targetCell;
-      tb->movingDirection = CLOCKWISE;
-      for (short piece = 0; piece < ob->pieceCount; piece++) {
-        ob->pieces[piece]->blockNum = &tb->blockNum;
-        ob->pieces[piece]->location = tb->pieces[0]->location;
-        ob->pieces[piece]->locationType = HOME_STRAIGHT;
-        tb->pieces[tb->pieceCount + piece] = ob->pieces[piece];
-      }
-      tb->pieceCount += ob->pieceCount;
-      resetBlock(ob);
-      htc->pieceCount = tb->pieceCount;
-      break;
+    tb->pieceCount += ob->pieceCount;
+    resetBlock(ob);
+    stc->pieceCount = tb->pieceCount;
+    break;
+  }
+  case HOME_STRAIGHT: {
+    HomeStraightCell *htc = (HomeStraightCell *)targetCell;
+    tb->movingDirection = CLOCKWISE;
+    for (short piece = 0; piece < ob->pieceCount; piece++) {
+      ob->pieces[piece]->blockNum = &tb->blockNum;
+      ob->pieces[piece]->location = tb->pieces[0]->location;
+      ob->pieces[piece]->locationType = HOME_STRAIGHT;
+      tb->pieces[tb->pieceCount + piece] = ob->pieces[piece];
     }
-    default:
-      break;
+    tb->pieceCount += ob->pieceCount;
+    resetBlock(ob);
+    htc->pieceCount = tb->pieceCount;
+    break;
+  }
+  default:
+    break;
   }
 }
 
@@ -572,7 +601,8 @@ Move blockBreakMoveCalculate(Piece *piece, short moveValue) {
 
   short moveLeft = 0;
   if (piece->locationType == STANDARD_AREA) {
-    if (move.check.doesPieceOrBlockMeetBlock == TRUE && isEligibleForHomeStraight(piece, NULL)) {
+    if (move.check.doesPieceOrBlockMeetBlock == TRUE &&
+        isEligibleForHomeStraight(piece, NULL)) {
 
       // standardArea --> home
       if (moveValue - move.check.distanceToApproach == 6) {
@@ -589,11 +619,14 @@ Move blockBreakMoveCalculate(Piece *piece, short moveValue) {
       if (homeStraights[piece->color->colorNum][moveLeft - 1].pieceCount == 0) {
         move.moveType = 9;
         move.startStandardCell = &standardArea[piece->location];
-        move.homeStraightCell = &homeStraights[piece->color->colorNum][moveLeft - 1];
+        move.homeStraightCell =
+            &homeStraights[piece->color->colorNum][moveLeft - 1];
       }
     } else {
       short nextLocation =
-          (piece->location + (1 - 2 * piece->movingDirection) * moveValue + MAX_STANDARD_CELLS) % MAX_STANDARD_CELLS;
+          (piece->location + (1 - 2 * piece->movingDirection) * moveValue +
+           MAX_STANDARD_CELLS) %
+          MAX_STANDARD_CELLS;
 
       StandardCell *nextCell = &standardArea[nextLocation];
 
@@ -604,7 +637,8 @@ Move blockBreakMoveCalculate(Piece *piece, short moveValue) {
         move.endStandardCell = nextCell;
       }
       // standardArea --> standardArea / enemyPiece
-      else if (nextCell->pieceCount == 1 && nextCell->piece->color->colorNum != piece->color->colorNum) {
+      else if (nextCell->pieceCount == 1 &&
+               nextCell->piece->color->colorNum != piece->color->colorNum) {
         move.moveType = 8;
         move.startStandardCell = &standardArea[piece->location];
         move.endStandardCell = nextCell;
@@ -615,7 +649,8 @@ Move blockBreakMoveCalculate(Piece *piece, short moveValue) {
     // homeStraight --> home
     if (moveValue == 5 - piece->location) {
       move.moveType = 13;
-      move.homeStraightCell = &homeStraights[piece->color->colorNum][piece->location];
+      move.homeStraightCell =
+          &homeStraights[piece->color->colorNum][piece->location];
       move.home = &homes[piece->color->colorNum];
     }
   }
@@ -633,7 +668,8 @@ short breakBlockExecute(Block *block, short blockSize, short *moveValues) {
   }
 
   for (short piece = 0; piece < blockSize; piece++) {
-    breakMoves[piece] = blockBreakMoveCalculate(block->pieces[piece], mV[piece]);
+    breakMoves[piece] =
+        blockBreakMoveCalculate(block->pieces[piece], mV[piece]);
     isValid *= breakMoves[piece].moveType;
   }
 
@@ -662,9 +698,11 @@ void breakBlock(Block *block, short blockSize) {
   }
 
   if (block->pieces[0]->locationType == STANDARD_AREA) {
-    printf("\b at standard-area cell L%d will be broken.\n", block->pieces[0]->location);
+    printf("\b at standard-area cell L%d will be broken.\n",
+           block->pieces[0]->location);
   } else if (block->pieces[0]->locationType == HOME_STRAIGHT) {
-    printf("\b at home-straight L%d will be broken.\n", block->pieces[0]->location);
+    printf("\b at home-straight L%d will be broken.\n",
+           block->pieces[0]->location);
   }
 
   for (mV[0] = 0; mV[0] < MOVEMENT_TOTAL; mV[0]++) {
@@ -688,7 +726,8 @@ void breakBlock(Block *block, short blockSize) {
         for (mV[2] = 0; mV[2] < MOVEMENT_TOTAL; mV[2]++) {
           if (mV[2] == mV[0] || mV[2] == mV[1]) {
             continue;
-          } else if (blockSize == 3 && mV[0] + mV[1] + mV[2] == MOVEMENT_TOTAL) {
+          } else if (blockSize == 3 &&
+                     mV[0] + mV[1] + mV[2] == MOVEMENT_TOTAL) {
             // block 3 related code
             if (breakBlockExecute(b, 3, mV)) {
               resetBlock(block);
@@ -705,7 +744,8 @@ void breakBlock(Block *block, short blockSize) {
             for (mV[3] = 0; mV[3] < MOVEMENT_TOTAL; mV[3]++) {
               if (mV[3] == mV[0] || mV[3] == mV[1] || mV[3] == mV[2]) {
                 continue;
-              } else if (blockSize == 4 && mV[0] + mV[1] + mV[2] + mV[3] == MOVEMENT_TOTAL) {
+              } else if (blockSize == 4 &&
+                         mV[0] + mV[1] + mV[2] + mV[3] == MOVEMENT_TOTAL) {
                 // block 4 related code
                 if (breakBlockExecute(b, 4, mV)) {
                   resetBlock(block);
@@ -732,56 +772,74 @@ void breakBlock(Block *block, short blockSize) {
 void blockedMessage(Move *move) {
   Move *m = move;
   StandardCell *blockingCell =
-      &standardArea[(m->startStandardCell->cellIndex + m->check.distanceToBlock + MAX_STANDARD_CELLS) %
+      &standardArea[(m->startStandardCell->cellIndex +
+                     m->check.distanceToBlock + MAX_STANDARD_CELLS) %
                     MAX_STANDARD_CELLS];
   Block *enemyBlock = blockingCell->block;
   if (!m->check.doesPieceOrBlockMeetBlock || m->check.canCaptureBlock) {
     return;
   }
   if (m->piece != NULL) {
-    if (m->check.doesPieceOrBlockPassApproach == TRUE && isEligibleForHomeStraight(m->piece, NULL)) {
-      short hscNum = m->check.initialMoveValue - m->check.distanceToApproach - 1;
-      printf("%s is blocked from moving from standard-area L%d to home-straight L%d by %s's block of %d containing ",
-             m->piece->name, m->startStandardCell->cellIndex, hscNum, enemyBlock->color->colorName,
-             enemyBlock->pieceCount);
+    if (m->check.doesPieceOrBlockPassApproach == TRUE &&
+        isEligibleForHomeStraight(m->piece, NULL)) {
+      short hscNum =
+          m->check.initialMoveValue - m->check.distanceToApproach - 1;
+      printf("%s is blocked from moving from standard-area L%d to "
+             "home-straight L%d by %s's block of %d containing ",
+             m->piece->name, m->startStandardCell->cellIndex, hscNum,
+             enemyBlock->color->colorName, enemyBlock->pieceCount);
       for (short piece = 0; piece < enemyBlock->pieceCount; piece++) {
         printf("%s,", enemyBlock->pieces[piece]->name);
       }
       printf("\b.\n");
     } else {
-      short sacNum = (m->startStandardCell->cellIndex + m->check.initialMoveValue -
-                      2 * m->piece->movingDirection * m->check.initialMoveValue + MAX_STANDARD_CELLS) %
-                     MAX_STANDARD_CELLS;
-      printf("%s is blocked from moving from standard-area L%d to L%d by %s's block of %d containing ", m->piece->name,
-             m->startStandardCell->cellIndex, sacNum, enemyBlock->color->colorName, enemyBlock->pieceCount);
+      short sacNum =
+          (m->startStandardCell->cellIndex + m->check.initialMoveValue -
+           2 * m->piece->movingDirection * m->check.initialMoveValue +
+           MAX_STANDARD_CELLS) %
+          MAX_STANDARD_CELLS;
+      printf("%s is blocked from moving from standard-area L%d to L%d by %s's "
+             "block of %d containing ",
+             m->piece->name, m->startStandardCell->cellIndex, sacNum,
+             enemyBlock->color->colorName, enemyBlock->pieceCount);
       for (short piece = 0; piece < enemyBlock->pieceCount; piece++) {
         printf("%s,", enemyBlock->pieces[piece]->name);
       }
       printf("\b.\n");
     }
   } else if (m->block != NULL) {
-    if (m->check.doesPieceOrBlockPassApproach == TRUE && isEligibleForHomeStraight(NULL, m->block)) {
-      short hscNum = m->check.initialMoveValue - m->check.distanceToApproach - 1;
-      printf("%s's block of %d containing ", m->block->color->colorName, m->block->pieceCount);
+    if (m->check.doesPieceOrBlockPassApproach == TRUE &&
+        isEligibleForHomeStraight(NULL, m->block)) {
+      short hscNum =
+          m->check.initialMoveValue - m->check.distanceToApproach - 1;
+      printf("%s's block of %d containing ", m->block->color->colorName,
+             m->block->pieceCount);
       for (short piece = 0; piece < m->block->pieceCount; piece++) {
         printf("%s,", m->block->pieces[piece]->name);
       }
-      printf("\b was blocked from moving from standard-area L%d to home-straight L%d by %s's block of %d containing ",
-             m->startStandardCell->cellIndex, hscNum, enemyBlock->color->colorName, enemyBlock->pieceCount);
+      printf("\b was blocked from moving from standard-area L%d to "
+             "home-straight L%d by %s's block of %d containing ",
+             m->startStandardCell->cellIndex, hscNum,
+             enemyBlock->color->colorName, enemyBlock->pieceCount);
       for (short piece = 0; piece < enemyBlock->pieceCount; piece++) {
         printf("%s,", enemyBlock->pieces[piece]->name);
       }
       printf("\b.\n");
     } else {
-      short sacNum = (m->startStandardCell->cellIndex + m->check.initialMoveValue -
-                      2 * m->block->movingDirection * m->check.initialMoveValue + MAX_STANDARD_CELLS) %
-                     MAX_STANDARD_CELLS;
-      printf("%s's block of %d containing ", m->block->color->colorName, m->block->pieceCount);
+      short sacNum =
+          (m->startStandardCell->cellIndex + m->check.initialMoveValue -
+           2 * m->block->movingDirection * m->check.initialMoveValue +
+           MAX_STANDARD_CELLS) %
+          MAX_STANDARD_CELLS;
+      printf("%s's block of %d containing ", m->block->color->colorName,
+             m->block->pieceCount);
       for (short piece = 0; piece < m->block->pieceCount; piece++) {
         printf("%s,", m->block->pieces[piece]->name);
       }
-      printf("\b was blocked from moving from standard-area L%d to L%d by %s's block of %d containing ",
-             m->startStandardCell->cellIndex, sacNum, enemyBlock->color->colorName, enemyBlock->pieceCount);
+      printf("\b was blocked from moving from standard-area L%d to L%d by %s's "
+             "block of %d containing ",
+             m->startStandardCell->cellIndex, sacNum,
+             enemyBlock->color->colorName, enemyBlock->pieceCount);
       for (short piece = 0; piece < enemyBlock->pieceCount; piece++) {
         printf("%s,", enemyBlock->pieces[piece]->name);
       }
@@ -797,17 +855,20 @@ void generateMysteryCell() {
     while (!isGenerationSuccessful) {
       short candidateCell = rand() % MAX_STANDARD_CELLS;
 
-      if ((mysteryCell.cell == NULL || candidateCell != mysteryCell.cell->cellIndex) &&
+      if ((mysteryCell.cell == NULL ||
+           candidateCell != mysteryCell.cell->cellIndex) &&
           standardArea[candidateCell].pieceCount == 0) {
         mysteryCell.cell = &standardArea[candidateCell];
         isGenerationSuccessful = TRUE;
-        printf("The mystery cell is at L%d for the next 4 rounds.\n", mysteryCell.cell->cellIndex);
+        printf("The mystery cell is at L%d for the next 4 rounds.\n",
+               mysteryCell.cell->cellIndex);
       }
     }
   }
 }
 
-void *mysteryTeleport(void *element, short elementType, short teleportLocation, short *returnType) {
+void *mysteryTeleport(void *element, short elementType, short teleportLocation,
+                      short *returnType) {
   StandardCell *originCell = NULL;
   StandardCell *targetCell = &standardArea[teleportLocation];
 
@@ -829,7 +890,8 @@ void *mysteryTeleport(void *element, short elementType, short teleportLocation, 
       // player piece
       if (targetCell->piece->color->colorNum == piece->color->colorNum) {
         Piece *playerPiece = targetCell->piece;
-        printf("%s teleported onto %s and created a block of 2\n", piece->name, playerPiece->name);
+        printf("%s teleported onto %s and created a block of 2\n", piece->name,
+               playerPiece->name);
         originCell->piece = NULL;
         originCell->pieceCount = 0;
         createBlock(piece, playerPiece, targetCell, STANDARD_AREA);
@@ -840,8 +902,8 @@ void *mysteryTeleport(void *element, short elementType, short teleportLocation, 
       // enemy piece
       else {
         Piece *enemyPiece = targetCell->piece;
-        printf("%s teleported onto %s's %s and eliminated it.\n", piece->name, enemyPiece->color->colorName,
-               enemyPiece->name);
+        printf("%s teleported onto %s's %s and eliminated it.\n", piece->name,
+               enemyPiece->color->colorName, enemyPiece->name);
         originCell->piece = NULL;
         originCell->pieceCount = 0;
         targetCell->piece = piece;
@@ -858,9 +920,10 @@ void *mysteryTeleport(void *element, short elementType, short teleportLocation, 
       // player block
       if (targetCell->block->color->colorNum == piece->color->colorNum) {
         Block *playerBlock = targetCell->block;
-        printf("%s teleported onto %s's block of %d containing ", piece->name, playerBlock->color->colorName,
-               playerBlock->pieceCount);
-        for (short pieceNum = 0; pieceNum < playerBlock->pieceCount; pieceNum++) {
+        printf("%s teleported onto %s's block of %d containing ", piece->name,
+               playerBlock->color->colorName, playerBlock->pieceCount);
+        for (short pieceNum = 0; pieceNum < playerBlock->pieceCount;
+             pieceNum++) {
           printf("%s,", playerBlock->pieces[pieceNum]->name);
         }
         printf("and expanded upon it.\n");
@@ -874,8 +937,8 @@ void *mysteryTeleport(void *element, short elementType, short teleportLocation, 
       // enemy block
       else {
         Block *enemyBlock = targetCell->block;
-        printf("%s's block of %d is at the teleporting location\n", enemyBlock->color->colorName,
-               enemyBlock->pieceCount);
+        printf("%s's block of %d is at the teleporting location\n",
+               enemyBlock->color->colorName, enemyBlock->pieceCount);
         *returnType = -1;
         return NULL;
       }
@@ -901,7 +964,8 @@ void *mysteryTeleport(void *element, short elementType, short teleportLocation, 
       // player piece
       if (targetCell->piece->color->colorNum == block->color->colorNum) {
         Piece *playerPiece = targetCell->piece;
-        printf("The block landed onto %s and expanded upon it.\n", playerPiece->name);
+        printf("The block landed onto %s and expanded upon it.\n",
+               playerPiece->name);
         originCell->block = NULL;
         originCell->pieceCount = 0;
         expandPieceByBlock(block, playerPiece, targetCell, STANDARD_AREA);
@@ -912,7 +976,8 @@ void *mysteryTeleport(void *element, short elementType, short teleportLocation, 
       // enemy piece
       else {
         Piece *enemyPiece = targetCell->piece;
-        printf("The block landed onto %s's %s and eliminated it.\n", enemyPiece->color->colorName, enemyPiece->name);
+        printf("The block landed onto %s's %s and eliminated it.\n",
+               enemyPiece->color->colorName, enemyPiece->name);
         originCell->block = NULL;
         originCell->pieceCount = 0;
         targetCell->block = block;
@@ -932,9 +997,10 @@ void *mysteryTeleport(void *element, short elementType, short teleportLocation, 
       // player block
       if (targetCell->block->color->colorNum == block->color->colorNum) {
         Block *playerBlock = targetCell->block;
-        printf("The block landed onto %s's block of %d containing ", playerBlock->color->colorName,
-               playerBlock->pieceCount);
-        for (short pieceNum = 0; pieceNum < playerBlock->pieceCount; pieceNum++) {
+        printf("The block landed onto %s's block of %d containing ",
+               playerBlock->color->colorName, playerBlock->pieceCount);
+        for (short pieceNum = 0; pieceNum < playerBlock->pieceCount;
+             pieceNum++) {
           printf("%s,", playerBlock->pieces[pieceNum]->name);
         }
         printf("and expanded upon it.\n");
@@ -950,9 +1016,10 @@ void *mysteryTeleport(void *element, short elementType, short teleportLocation, 
         // can eliminate
         if (block->pieceCount >= targetCell->block->pieceCount) {
           Block *enemyBlock = targetCell->block;
-          printf("The block landed onto %s's block of %d containing ", enemyBlock->color->colorName,
-                 enemyBlock->pieceCount);
-          for (short pieceNum = 0; pieceNum < enemyBlock->pieceCount; pieceNum++) {
+          printf("The block landed onto %s's block of %d containing ",
+                 enemyBlock->color->colorName, enemyBlock->pieceCount);
+          for (short pieceNum = 0; pieceNum < enemyBlock->pieceCount;
+               pieceNum++) {
             printf("%s,", enemyBlock->pieces[pieceNum]->name);
           }
           printf("\b and eliminated it.\n");
@@ -964,7 +1031,8 @@ void *mysteryTeleport(void *element, short elementType, short teleportLocation, 
             block->pieces[pieceNum]->capturedPieceCount++;
             block->pieces[pieceNum]->location = targetCell->cellIndex;
           }
-          for (short pieceNum = 0; pieceNum < enemyBlock->pieceCount; pieceNum++) {
+          for (short pieceNum = 0; pieceNum < enemyBlock->pieceCount;
+               pieceNum++) {
             rebasePiece(enemyBlock->pieces[pieceNum]);
           }
           resetBlock(enemyBlock);
@@ -975,9 +1043,10 @@ void *mysteryTeleport(void *element, short elementType, short teleportLocation, 
         // cannot eliminate
         else {
           Block *enemyBlock = targetCell->block;
-          printf("The block landed onto %s's block of %d containing ", enemyBlock->color->colorName,
-                 enemyBlock->pieceCount);
-          for (short pieceNum = 0; pieceNum < enemyBlock->pieceCount; pieceNum++) {
+          printf("The block landed onto %s's block of %d containing ",
+                 enemyBlock->color->colorName, enemyBlock->pieceCount);
+          for (short pieceNum = 0; pieceNum < enemyBlock->pieceCount;
+               pieceNum++) {
             printf("%s,", enemyBlock->pieces[pieceNum]->name);
           }
           printf("\b and failed to eliminate it.\n");
@@ -1006,378 +1075,417 @@ void executeMysteryEffect() {
 
   if (piece != NULL) {
     switch (cellEffect) {
-      // Bhawana
-      case 0: {
-        printf("%s's %s is teleporting to Bhawana.\n", piece->color->colorName, piece->name);
-        teleportLocation = BHAWANA;
-        if (mysteryCell.cell->cellIndex != teleportLocation) {
-          returnElement = mysteryTeleport(piece, PIECE, teleportLocation, &returnType);
-        } else {
-          returnElement = piece;
-          returnType = 0;
-        }
-        short auraType = coinToss() + 2;
-
-        if (returnType == 0) {
-          Piece *returnP = (Piece *)returnElement;
-          returnP->mysteryEffect = auraType;
-          returnP->mysteryEffectDuration = MAX_MYSTERY_EFFECT_DURATION;
-          switch (auraType) {
-            case AURA_ENERGIZED:
-              printf("%s feels energized, and movement speed doubles.\n", returnP->name);
-              break;
-            case AURA_SICKNESS:
-              printf("%s feels sick, and movement speed halves.\n", returnP->name);
-              break;
-          }
-        } else if (returnType == 1) {
-          Block *returnB = (Block *)returnElement;
-          returnB->mysteryEffect = auraType;
-          returnB->mysteryEffectDuration = MAX_MYSTERY_EFFECT_DURATION;
-          printf("%s's block of %d containing ", returnB->color->colorName, returnB->pieceCount);
-          for (short piece = 0; piece < returnB->pieceCount; piece++) {
-            printf("%s,", returnB->pieces[piece]->name);
-          }
-          switch (auraType) {
-            case AURA_ENERGIZED:
-              printf("\b feels energized, and movement speed doubles.\n");
-              break;
-            case AURA_SICKNESS:
-              printf("\b feels sick, and movement speed halves.\n");
-              break;
-          }
-        } else if (returnType == -1) {
-          printf("Teleportation failed. No mystery effect was granted.\n");
-        }
-        break;
+    // Bhawana
+    case 0: {
+      printf("%s's %s is teleporting to Bhawana.\n", piece->color->colorName,
+             piece->name);
+      teleportLocation = BHAWANA;
+      if (mysteryCell.cell->cellIndex != teleportLocation) {
+        returnElement =
+            mysteryTeleport(piece, PIECE, teleportLocation, &returnType);
+      } else {
+        returnElement = piece;
+        returnType = 0;
       }
-      // Kotuwa
-      case 1: {
-        printf("%s's %s is teleporting to Kotuwa.\n", piece->color->colorName, piece->name);
-        teleportLocation = KOTUWA;
-        if (mysteryCell.cell->cellIndex != teleportLocation) {
-          returnElement = mysteryTeleport(piece, PIECE, teleportLocation, &returnType);
-        } else {
-          returnElement = piece;
-          returnType = 0;
-        }
+      short auraType = coinToss() + 2;
 
-        if (returnType == 0) {
-          Piece *returnP = (Piece *)returnElement;
-          returnP->mysteryEffect = IMMOVABLE;
-          returnP->mysteryEffectDuration = MAX_MYSTERY_EFFECT_DURATION;
-          printf("%s attends briefing and cannot move for four rounds.\n", returnP->name);
-        } else if (returnType == 1) {
-          Block *returnB = (Block *)returnElement;
-          returnB->mysteryEffect = IMMOVABLE;
-          returnB->mysteryEffectDuration = MAX_MYSTERY_EFFECT_DURATION;
-          printf("%s's block of %d containing ", returnB->color->colorName, returnB->pieceCount);
-          for (short piece = 0; piece < returnB->pieceCount; piece++) {
-            printf("%s,", returnB->pieces[piece]->name);
-          }
-          printf("\b attends briefing and cannot move for four rounds.\n");
-        } else if (returnType == -1) {
-          printf("Teleportation failed. No mystery effect was granted.\n");
+      if (returnType == 0) {
+        Piece *returnP = (Piece *)returnElement;
+        returnP->mysteryEffect = auraType;
+        returnP->mysteryEffectDuration = MAX_MYSTERY_EFFECT_DURATION;
+        switch (auraType) {
+        case AURA_ENERGIZED:
+          printf("%s feels energized, and movement speed doubles.\n",
+                 returnP->name);
+          break;
+        case AURA_SICKNESS:
+          printf("%s feels sick, and movement speed halves.\n", returnP->name);
+          break;
         }
-        break;
+      } else if (returnType == 1) {
+        Block *returnB = (Block *)returnElement;
+        returnB->mysteryEffect = auraType;
+        returnB->mysteryEffectDuration = MAX_MYSTERY_EFFECT_DURATION;
+        printf("%s's block of %d containing ", returnB->color->colorName,
+               returnB->pieceCount);
+        for (short piece = 0; piece < returnB->pieceCount; piece++) {
+          printf("%s,", returnB->pieces[piece]->name);
+        }
+        switch (auraType) {
+        case AURA_ENERGIZED:
+          printf("\b feels energized, and movement speed doubles.\n");
+          break;
+        case AURA_SICKNESS:
+          printf("\b feels sick, and movement speed halves.\n");
+          break;
+        }
+      } else if (returnType == -1) {
+        printf("Teleportation failed. No mystery effect was granted.\n");
       }
-      // Pita-Kotuwa
-      case 2: {
-        printf("%s's %s is teleporting to Pita-Kotuwa.\n", piece->color->colorName, piece->name);
-        teleportLocation = PITA_KOTUWA;
-        if (mysteryCell.cell->cellIndex != teleportLocation) {
-          returnElement = mysteryTeleport(piece, PIECE, teleportLocation, &returnType);
-        } else {
-          returnElement = piece;
-          returnType = 0;
-        }
+      break;
+    }
+    // Kotuwa
+    case 1: {
+      printf("%s's %s is teleporting to Kotuwa.\n", piece->color->colorName,
+             piece->name);
+      teleportLocation = KOTUWA;
+      if (mysteryCell.cell->cellIndex != teleportLocation) {
+        returnElement =
+            mysteryTeleport(piece, PIECE, teleportLocation, &returnType);
+      } else {
+        returnElement = piece;
+        returnType = 0;
+      }
 
-        if (returnType == 0) {
-          Piece *returnP = (Piece *)returnElement;
-          if (returnP->movingDirection == CLOCKWISE) {
-            returnP->movingDirection = COUNTER_CLOCKWISE;
-            printf("%s, which was moving clockwise, has changed to moving counter-clockwise", returnP->name);
-          } else if (returnP->movingDirection == COUNTER_CLOCKWISE) {
-            returnType = 0;
-            teleportLocation = KOTUWA;
-            returnElement = mysteryTeleport(returnP, PIECE, teleportLocation, &returnType);
-            printf("%s is moving in a counter-clockwise direction. Teleporting to Kotuwa from Pita-Kotuwa.\n",
+      if (returnType == 0) {
+        Piece *returnP = (Piece *)returnElement;
+        returnP->mysteryEffect = IMMOVABLE;
+        returnP->mysteryEffectDuration = MAX_MYSTERY_EFFECT_DURATION;
+        printf("%s attends briefing and cannot move for four rounds.\n",
+               returnP->name);
+      } else if (returnType == 1) {
+        Block *returnB = (Block *)returnElement;
+        returnB->mysteryEffect = IMMOVABLE;
+        returnB->mysteryEffectDuration = MAX_MYSTERY_EFFECT_DURATION;
+        printf("%s's block of %d containing ", returnB->color->colorName,
+               returnB->pieceCount);
+        for (short piece = 0; piece < returnB->pieceCount; piece++) {
+          printf("%s,", returnB->pieces[piece]->name);
+        }
+        printf("\b attends briefing and cannot move for four rounds.\n");
+      } else if (returnType == -1) {
+        printf("Teleportation failed. No mystery effect was granted.\n");
+      }
+      break;
+    }
+    // Pita-Kotuwa
+    case 2: {
+      printf("%s's %s is teleporting to Pita-Kotuwa.\n",
+             piece->color->colorName, piece->name);
+      teleportLocation = PITA_KOTUWA;
+      if (mysteryCell.cell->cellIndex != teleportLocation) {
+        returnElement =
+            mysteryTeleport(piece, PIECE, teleportLocation, &returnType);
+      } else {
+        returnElement = piece;
+        returnType = 0;
+      }
+
+      if (returnType == 0) {
+        Piece *returnP = (Piece *)returnElement;
+        if (returnP->movingDirection == CLOCKWISE) {
+          returnP->movingDirection = COUNTER_CLOCKWISE;
+          printf("%s, which was moving clockwise, has changed to moving "
+                 "counter-clockwise",
+                 returnP->name);
+        } else if (returnP->movingDirection == COUNTER_CLOCKWISE) {
+          returnType = 0;
+          teleportLocation = KOTUWA;
+          returnElement =
+              mysteryTeleport(returnP, PIECE, teleportLocation, &returnType);
+          printf("%s is moving in a counter-clockwise direction. Teleporting "
+                 "to Kotuwa from Pita-Kotuwa.\n",
+                 returnP->name);
+          if (returnType == 0) {
+            Piece *returnP = (Piece *)returnElement;
+            returnP->mysteryEffect = IMMOVABLE;
+            returnP->mysteryEffectDuration = MAX_MYSTERY_EFFECT_DURATION;
+            printf("%s attends briefing and cannot move for four rounds.\n",
                    returnP->name);
-            if (returnType == 0) {
-              Piece *returnP = (Piece *)returnElement;
-              returnP->mysteryEffect = IMMOVABLE;
-              returnP->mysteryEffectDuration = MAX_MYSTERY_EFFECT_DURATION;
-              printf("%s attends briefing and cannot move for four rounds.\n", returnP->name);
-            } else if (returnType == 1) {
-              Block *returnB = (Block *)returnElement;
-              returnB->mysteryEffect = IMMOVABLE;
-              returnB->mysteryEffectDuration = MAX_MYSTERY_EFFECT_DURATION;
-              printf("%s's block of %d containing ", returnB->color->colorName, returnB->pieceCount);
-              for (short piece = 0; piece < returnB->pieceCount; piece++) {
-                printf("%s,", returnB->pieces[piece]->name);
-              }
-              printf("\b attends briefing and cannot move for four rounds.\n");
-            } else if (returnType == -1) {
-              printf("Teleportation failed. No mystery effect was granted.\n");
-            }
-          }
-        } else if (returnType == 1) {
-          Block *returnB = (Block *)returnElement;
-          if (returnB->movingDirection == CLOCKWISE) {
-            returnB->movingDirection = COUNTER_CLOCKWISE;
-            printf("%s's block of %d containing ", returnB->color->colorName, returnB->pieceCount);
+          } else if (returnType == 1) {
+            Block *returnB = (Block *)returnElement;
+            returnB->mysteryEffect = IMMOVABLE;
+            returnB->mysteryEffectDuration = MAX_MYSTERY_EFFECT_DURATION;
+            printf("%s's block of %d containing ", returnB->color->colorName,
+                   returnB->pieceCount);
             for (short piece = 0; piece < returnB->pieceCount; piece++) {
               printf("%s,", returnB->pieces[piece]->name);
             }
-            printf("\b has changed to moving counter-clockwise.\n");
-          } else if (returnB->movingDirection == COUNTER_CLOCKWISE) {
-            returnType = 0;
-            teleportLocation = KOTUWA;
-            returnElement = mysteryTeleport(returnB, BLOCK, teleportLocation, &returnType);
-            printf("%s's block of %d containing ", returnB->color->colorName, returnB->pieceCount);
+            printf("\b attends briefing and cannot move for four rounds.\n");
+          } else if (returnType == -1) {
+            printf("Teleportation failed. No mystery effect was granted.\n");
+          }
+        }
+      } else if (returnType == 1) {
+        Block *returnB = (Block *)returnElement;
+        if (returnB->movingDirection == CLOCKWISE) {
+          returnB->movingDirection = COUNTER_CLOCKWISE;
+          printf("%s's block of %d containing ", returnB->color->colorName,
+                 returnB->pieceCount);
+          for (short piece = 0; piece < returnB->pieceCount; piece++) {
+            printf("%s,", returnB->pieces[piece]->name);
+          }
+          printf("\b has changed to moving counter-clockwise.\n");
+        } else if (returnB->movingDirection == COUNTER_CLOCKWISE) {
+          returnType = 0;
+          teleportLocation = KOTUWA;
+          returnElement =
+              mysteryTeleport(returnB, BLOCK, teleportLocation, &returnType);
+          printf("%s's block of %d containing ", returnB->color->colorName,
+                 returnB->pieceCount);
+          for (short piece = 0; piece < returnB->pieceCount; piece++) {
+            printf("%s,", returnB->pieces[piece]->name);
+          }
+          printf("\b is moving in a clockwise direction. Teleporting to Kotuwa "
+                 "from Pita-Kotuwa.\n");
+          if (returnType == 1) {
+            Block *returnB = (Block *)returnElement;
+            returnB->mysteryEffect = IMMOVABLE;
+            returnB->mysteryEffectDuration = MAX_MYSTERY_EFFECT_DURATION;
+            printf("%s's block of %d containing ", returnB->color->colorName,
+                   returnB->pieceCount);
             for (short piece = 0; piece < returnB->pieceCount; piece++) {
               printf("%s,", returnB->pieces[piece]->name);
             }
-            printf("\b is moving in a clockwise direction. Teleporting to Kotuwa from Pita-Kotuwa.\n");
-            if (returnType == 1) {
-              Block *returnB = (Block *)returnElement;
-              returnB->mysteryEffect = IMMOVABLE;
-              returnB->mysteryEffectDuration = MAX_MYSTERY_EFFECT_DURATION;
-              printf("%s's block of %d containing ", returnB->color->colorName, returnB->pieceCount);
-              for (short piece = 0; piece < returnB->pieceCount; piece++) {
-                printf("%s,", returnB->pieces[piece]->name);
-              }
-              printf("\b attends briefing and cannot move for four rounds.\n");
-            } else if (returnType == -1) {
-              printf("Teleportation failed. No mystery effect was granted.\n");
-            }
+            printf("\b attends briefing and cannot move for four rounds.\n");
+          } else if (returnType == -1) {
+            printf("Teleportation failed. No mystery effect was granted.\n");
           }
-        } else if (returnType == -1) {
-          printf("Teleportation failed. No mystery effect was granted.\n");
         }
-        break;
+      } else if (returnType == -1) {
+        printf("Teleportation failed. No mystery effect was granted.\n");
       }
-      // Base
-      case 3: {
-        printf("%s's %s is teleporting to Base.\n", piece->color->colorName, piece->name);
-        standardArea[piece->location].piece = NULL;
-        standardArea[piece->location].pieceCount = 0;
-        rebasePiece(piece);
-        break;
+      break;
+    }
+    // Base
+    case 3: {
+      printf("%s's %s is teleporting to Base.\n", piece->color->colorName,
+             piece->name);
+      standardArea[piece->location].piece = NULL;
+      standardArea[piece->location].pieceCount = 0;
+      rebasePiece(piece);
+      break;
+    }
+    // Starting Cell
+    case 4: {
+      printf("%s's %s is teleporting to Starting Cell (X).\n",
+             piece->color->colorName, piece->name);
+      teleportLocation = piece->startingCell;
+      if (mysteryCell.cell->cellIndex != teleportLocation) {
+        mysteryTeleport(piece, PIECE, teleportLocation, &returnType);
+      } else {
+        returnType = 0;
       }
-      // Starting Cell
-      case 4: {
-        printf("%s's %s is teleporting to Starting Cell (X).\n", piece->color->colorName, piece->name);
-        teleportLocation = piece->startingCell;
-        if (mysteryCell.cell->cellIndex != teleportLocation) {
-          mysteryTeleport(piece, PIECE, teleportLocation, &returnType);
-        } else {
-          returnType = 0;
-        }
 
-        if (returnType == -1) {
-          printf("Teleportation failed.\n");
-        }
-        break;
+      if (returnType == -1) {
+        printf("Teleportation failed.\n");
       }
-      // Approach
-      case 5: {
-        printf("%s's %s is teleported to Approach.\n", piece->color->colorName, piece->name);
-        teleportLocation = piece->approach;
-        if (mysteryCell.cell->cellIndex != teleportLocation) {
-          mysteryTeleport(piece, PIECE, teleportLocation, &returnType);
-        } else {
-          returnType = 0;
-        }
+      break;
+    }
+    // Approach
+    case 5: {
+      printf("%s's %s is teleported to Approach.\n", piece->color->colorName,
+             piece->name);
+      teleportLocation = piece->approach;
+      if (mysteryCell.cell->cellIndex != teleportLocation) {
+        mysteryTeleport(piece, PIECE, teleportLocation, &returnType);
+      } else {
+        returnType = 0;
+      }
 
-        if (returnType == -1) {
-          printf("Teleportation failed.\n");
-        }
-        break;
+      if (returnType == -1) {
+        printf("Teleportation failed.\n");
       }
-      default:
-        break;
+      break;
+    }
+    default:
+      break;
     }
   } else if (block != NULL) {
     switch (cellEffect) {
-      // Bhawana
-      case 0: {
-        printf("%s's block of %d containing ", block->color->colorName, block->pieceCount);
-        for (short piece = 0; piece < block->pieceCount; piece++) {
-          printf("%s,", block->pieces[piece]->name);
-        }
-        printf("\b is teleporting to Bhawana\n");
+    // Bhawana
+    case 0: {
+      printf("%s's block of %d containing ", block->color->colorName,
+             block->pieceCount);
+      for (short piece = 0; piece < block->pieceCount; piece++) {
+        printf("%s,", block->pieces[piece]->name);
+      }
+      printf("\b is teleporting to Bhawana\n");
 
-        teleportLocation = BHAWANA;
-        if (mysteryCell.cell->cellIndex != teleportLocation) {
-          returnElement = mysteryTeleport(block, BLOCK, teleportLocation, &returnType);
-        } else {
-          returnElement = block;
-          returnType = 1;
-        }
-        short auraType = coinToss() + 2;
+      teleportLocation = BHAWANA;
+      if (mysteryCell.cell->cellIndex != teleportLocation) {
+        returnElement =
+            mysteryTeleport(block, BLOCK, teleportLocation, &returnType);
+      } else {
+        returnElement = block;
+        returnType = 1;
+      }
+      short auraType = coinToss() + 2;
 
-        if (returnType == 1) {
-          Block *returnB = (Block *)returnElement;
-          returnB->mysteryEffect = auraType;
-          returnB->mysteryEffectDuration = MAX_MYSTERY_EFFECT_DURATION;
-          printf("%s's block of %d containing ", returnB->color->colorName, returnB->pieceCount);
+      if (returnType == 1) {
+        Block *returnB = (Block *)returnElement;
+        returnB->mysteryEffect = auraType;
+        returnB->mysteryEffectDuration = MAX_MYSTERY_EFFECT_DURATION;
+        printf("%s's block of %d containing ", returnB->color->colorName,
+               returnB->pieceCount);
+        for (short piece = 0; piece < returnB->pieceCount; piece++) {
+          printf("%s,", returnB->pieces[piece]->name);
+        }
+        switch (auraType) {
+        case AURA_ENERGIZED:
+          printf("\b feels energized, and movement speed doubles.\n");
+          break;
+        case AURA_SICKNESS:
+          printf("\b feels sick, and movement speed halves.\n");
+          break;
+        }
+      } else if (returnType == -1) {
+        printf("Teleportation failed. No mystery effect was granted.\n");
+      }
+      break;
+    }
+    // Kotuwa
+    case 1: {
+      printf("%s's block of %d containing ", block->color->colorName,
+             block->pieceCount);
+      for (short piece = 0; piece < block->pieceCount; piece++) {
+        printf("%s,", block->pieces[piece]->name);
+      }
+      printf("\b teleporting to Kotuwa\n");
+
+      teleportLocation = KOTUWA;
+      if (mysteryCell.cell->cellIndex != teleportLocation) {
+        returnElement =
+            mysteryTeleport(block, BLOCK, teleportLocation, &returnType);
+      } else {
+        returnElement = block;
+        returnType = 1;
+      }
+
+      if (returnType == 1) {
+        Block *returnB = (Block *)returnElement;
+        returnB->mysteryEffect = IMMOVABLE;
+        returnB->mysteryEffectDuration = MAX_MYSTERY_EFFECT_DURATION;
+        printf("%s's block of %d containing ", returnB->color->colorName,
+               returnB->pieceCount);
+        for (short piece = 0; piece < returnB->pieceCount; piece++) {
+          printf("%s,", returnB->pieces[piece]->name);
+        }
+        printf("\b attends briefing and cannot move for four rounds.\n");
+      } else if (returnType == -1) {
+        printf("Teleportation failed. No mystery effect was granted.\n");
+      }
+      break;
+    }
+    // Pita-Kotuwa
+    case 2: {
+      printf("%s's block of %d containing ", block->color->colorName,
+             block->pieceCount);
+      for (short piece = 0; piece < block->pieceCount; piece++) {
+        printf("%s,", block->pieces[piece]->name);
+      }
+      printf("\b teleporting to Pita-Kotuwa.\n");
+
+      teleportLocation = PITA_KOTUWA;
+      if (mysteryCell.cell->cellIndex != teleportLocation) {
+        returnElement =
+            mysteryTeleport(block, BLOCK, teleportLocation, &returnType);
+      } else {
+        returnElement = block;
+        returnType = 1;
+      }
+
+      if (returnType == 1) {
+        Block *returnB = (Block *)returnElement;
+        if (returnB->movingDirection == CLOCKWISE) {
+          returnB->movingDirection = COUNTER_CLOCKWISE;
+          printf("%s's block of %d containing ", returnB->color->colorName,
+                 returnB->pieceCount);
           for (short piece = 0; piece < returnB->pieceCount; piece++) {
             printf("%s,", returnB->pieces[piece]->name);
           }
-          switch (auraType) {
-            case AURA_ENERGIZED:
-              printf("\b feels energized, and movement speed doubles.\n");
-              break;
-            case AURA_SICKNESS:
-              printf("\b feels sick, and movement speed halves.\n");
-              break;
-          }
-        } else if (returnType == -1) {
-          printf("Teleportation failed. No mystery effect was granted.\n");
-        }
-        break;
-      }
-      // Kotuwa
-      case 1: {
-        printf("%s's block of %d containing ", block->color->colorName, block->pieceCount);
-        for (short piece = 0; piece < block->pieceCount; piece++) {
-          printf("%s,", block->pieces[piece]->name);
-        }
-        printf("\b teleporting to Kotuwa\n");
-
-        teleportLocation = KOTUWA;
-        if (mysteryCell.cell->cellIndex != teleportLocation) {
-          returnElement = mysteryTeleport(block, BLOCK, teleportLocation, &returnType);
-        } else {
-          returnElement = block;
-          returnType = 1;
-        }
-
-        if (returnType == 1) {
-          Block *returnB = (Block *)returnElement;
-          returnB->mysteryEffect = IMMOVABLE;
-          returnB->mysteryEffectDuration = MAX_MYSTERY_EFFECT_DURATION;
-          printf("%s's block of %d containing ", returnB->color->colorName, returnB->pieceCount);
+          printf("\b has changed to moving counter-clockwise.\n");
+        } else if (returnB->movingDirection == COUNTER_CLOCKWISE) {
+          returnType = 0;
+          teleportLocation = KOTUWA;
+          returnElement =
+              mysteryTeleport(returnB, BLOCK, teleportLocation, &returnType);
+          printf("%s's block of %d containing ", returnB->color->colorName,
+                 returnB->pieceCount);
           for (short piece = 0; piece < returnB->pieceCount; piece++) {
             printf("%s,", returnB->pieces[piece]->name);
           }
-          printf("\b attends briefing and cannot move for four rounds.\n");
-        } else if (returnType == -1) {
-          printf("Teleportation failed. No mystery effect was granted.\n");
-        }
-        break;
-      }
-      // Pita-Kotuwa
-      case 2: {
-        printf("%s's block of %d containing ", block->color->colorName, block->pieceCount);
-        for (short piece = 0; piece < block->pieceCount; piece++) {
-          printf("%s,", block->pieces[piece]->name);
-        }
-        printf("\b teleporting to Pita-Kotuwa.\n");
-
-        teleportLocation = PITA_KOTUWA;
-        if (mysteryCell.cell->cellIndex != teleportLocation) {
-          returnElement = mysteryTeleport(block, BLOCK, teleportLocation, &returnType);
-        } else {
-          returnElement = block;
-          returnType = 1;
-        }
-
-        if (returnType == 1) {
-          Block *returnB = (Block *)returnElement;
-          if (returnB->movingDirection == CLOCKWISE) {
-            returnB->movingDirection = COUNTER_CLOCKWISE;
-            printf("%s's block of %d containing ", returnB->color->colorName, returnB->pieceCount);
+          printf("\b is moving in a clockwise direction. Teleporting to Kotuwa "
+                 "from Pita-Kotuwa.\n");
+          if (returnType == 1) {
+            Block *returnB = (Block *)returnElement;
+            returnB->mysteryEffect = IMMOVABLE;
+            returnB->mysteryEffectDuration = MAX_MYSTERY_EFFECT_DURATION;
+            printf("%s's block of %d containing ", returnB->color->colorName,
+                   returnB->pieceCount);
             for (short piece = 0; piece < returnB->pieceCount; piece++) {
               printf("%s,", returnB->pieces[piece]->name);
             }
-            printf("\b has changed to moving counter-clockwise.\n");
-          } else if (returnB->movingDirection == COUNTER_CLOCKWISE) {
-            returnType = 0;
-            teleportLocation = KOTUWA;
-            returnElement = mysteryTeleport(returnB, BLOCK, teleportLocation, &returnType);
-            printf("%s's block of %d containing ", returnB->color->colorName, returnB->pieceCount);
-            for (short piece = 0; piece < returnB->pieceCount; piece++) {
-              printf("%s,", returnB->pieces[piece]->name);
-            }
-            printf("\b is moving in a clockwise direction. Teleporting to Kotuwa "
-                   "from Pita-Kotuwa.\n");
-            if (returnType == 1) {
-              Block *returnB = (Block *)returnElement;
-              returnB->mysteryEffect = IMMOVABLE;
-              returnB->mysteryEffectDuration = MAX_MYSTERY_EFFECT_DURATION;
-              printf("%s's block of %d containing ", returnB->color->colorName, returnB->pieceCount);
-              for (short piece = 0; piece < returnB->pieceCount; piece++) {
-                printf("%s,", returnB->pieces[piece]->name);
-              }
-              printf("\b attends briefing and cannot move for four rounds.\n");
-            } else if (returnType == -1) {
-              printf("Teleportation failed. No mystery effect was granted.\n");
-            }
+            printf("\b attends briefing and cannot move for four rounds.\n");
+          } else if (returnType == -1) {
+            printf("Teleportation failed. No mystery effect was granted.\n");
           }
-        } else if (returnType == -1) {
-          printf("Teleportation failed. No mystery effect was granted.\n");
         }
-        break;
+      } else if (returnType == -1) {
+        printf("Teleportation failed. No mystery effect was granted.\n");
       }
-      // Base
-      case 3: {
-        printf("%s's block of %d containing ", block->color->colorName, block->pieceCount);
-        for (short piece = 0; piece < block->pieceCount; piece++) {
-          printf("%s,", block->pieces[piece]->name);
-        }
-        printf("\b teleported to Base\n");
-
-        standardArea[block->pieces[0]->location].block = NULL;
-        standardArea[block->pieces[0]->location].pieceCount = 0;
-        for (short piece = 0; piece < block->pieceCount; piece++) {
-          rebasePiece(block->pieces[piece]);
-        }
-        resetBlock(block);
-        break;
+      break;
+    }
+    // Base
+    case 3: {
+      printf("%s's block of %d containing ", block->color->colorName,
+             block->pieceCount);
+      for (short piece = 0; piece < block->pieceCount; piece++) {
+        printf("%s,", block->pieces[piece]->name);
       }
-      // Starting Cell
-      case 4: {
-        printf("%s's block of %d containing ", block->color->colorName, block->pieceCount);
-        for (short piece = 0; piece < block->pieceCount; piece++) {
-          printf("%s,", block->pieces[piece]->name);
-        }
-        printf("\b is teleporting to Starting Cell (X)\n");
+      printf("\b teleported to Base\n");
 
-        teleportLocation = block->pieces[0]->startingCell;
-        if (mysteryCell.cell->cellIndex != teleportLocation) {
-          mysteryTeleport(block, BLOCK, teleportLocation, &returnType);
-        } else {
-          returnType = 1;
-        }
-
-        if (returnType == -1) {
-          printf("Teleportation failed.\n");
-        }
-        break;
+      standardArea[block->pieces[0]->location].block = NULL;
+      standardArea[block->pieces[0]->location].pieceCount = 0;
+      for (short piece = 0; piece < block->pieceCount; piece++) {
+        rebasePiece(block->pieces[piece]);
       }
-      // Approach
-      case 5: {
-        printf("%s's block of %d containing ", block->color->colorName, block->pieceCount);
-        for (short piece = 0; piece < block->pieceCount; piece++) {
-          printf("%s,", block->pieces[piece]->name);
-        }
-        printf("\b teleported to Approach\n");
-
-        teleportLocation = block->pieces[0]->startingCell;
-        if (mysteryCell.cell->cellIndex != teleportLocation) {
-          mysteryTeleport(block, BLOCK, teleportLocation, &returnType);
-        } else {
-          returnType = 1;
-        }
-        if (returnType == -1) {
-          printf("Teleportation failed.\n");
-        }
-        break;
+      resetBlock(block);
+      break;
+    }
+    // Starting Cell
+    case 4: {
+      printf("%s's block of %d containing ", block->color->colorName,
+             block->pieceCount);
+      for (short piece = 0; piece < block->pieceCount; piece++) {
+        printf("%s,", block->pieces[piece]->name);
       }
-      default:
-        break;
+      printf("\b is teleporting to Starting Cell (X)\n");
+
+      teleportLocation = block->pieces[0]->startingCell;
+      if (mysteryCell.cell->cellIndex != teleportLocation) {
+        mysteryTeleport(block, BLOCK, teleportLocation, &returnType);
+      } else {
+        returnType = 1;
+      }
+
+      if (returnType == -1) {
+        printf("Teleportation failed.\n");
+      }
+      break;
+    }
+    // Approach
+    case 5: {
+      printf("%s's block of %d containing ", block->color->colorName,
+             block->pieceCount);
+      for (short piece = 0; piece < block->pieceCount; piece++) {
+        printf("%s,", block->pieces[piece]->name);
+      }
+      printf("\b teleported to Approach\n");
+
+      teleportLocation = block->pieces[0]->startingCell;
+      if (mysteryCell.cell->cellIndex != teleportLocation) {
+        mysteryTeleport(block, BLOCK, teleportLocation, &returnType);
+      } else {
+        returnType = 1;
+      }
+      if (returnType == -1) {
+        printf("Teleportation failed.\n");
+      }
+      break;
+    }
+    default:
+      break;
     }
   }
 }
@@ -1408,9 +1516,12 @@ void decayMysteryCellEffect() {
 
 short isEligibleForHomeStraight(Piece *piece, Block *block) {
   if (piece != NULL) {
-    if (piece->capturedPieceCount > 0 && piece->movingDirection == COUNTER_CLOCKWISE && piece->approachPassCount > 0) {
+    if (piece->capturedPieceCount > 0 &&
+        piece->movingDirection == COUNTER_CLOCKWISE &&
+        piece->approachPassCount > 0) {
       return TRUE;
-    } else if (piece->capturedPieceCount > 0 && piece->movingDirection == CLOCKWISE) {
+    } else if (piece->capturedPieceCount > 0 &&
+               piece->movingDirection == CLOCKWISE) {
       return TRUE;
     } else {
       return FALSE;
@@ -1422,7 +1533,8 @@ short isEligibleForHomeStraight(Piece *piece, Block *block) {
         continue;
       } else if (p->capturedPieceCount == 0) {
         return FALSE;
-      } else if (p->movingDirection == COUNTER_CLOCKWISE && p->approachPassCount == 0) {
+      } else if (p->movingDirection == COUNTER_CLOCKWISE &&
+                 p->approachPassCount == 0) {
         return FALSE;
       }
     }
@@ -1469,15 +1581,18 @@ void b_sA_enemyPiece(Move *move, Piece *piece) {
   m->enemyPiece = standardArea[piece->startingCell].piece;
 }
 
-void sA_sA_emptyCell(Move *move, Piece *piece, Block *block, short targetLocation, Check *check) {
+void sA_sA_emptyCell(Move *move, void *element, short elementType,
+                     short targetLocation, Check *check) {
   Move *m = move;
-  if (piece != NULL) {
+  if (elementType == PIECE) {
+    Piece *piece = (Piece *)element;
     m->moveType = 5;
     m->piece = piece;
     m->startStandardCell = &standardArea[piece->location];
     m->endStandardCell = &standardArea[targetLocation];
     m->check = *(check);
-  } else if (block != NULL) {
+  } else if (elementType == BLOCK) {
+    Block *block = (Block *)element;
     m->moveType = 14;
     m->block = block;
     m->startStandardCell = &standardArea[block->pieces[0]->location];
@@ -1486,16 +1601,19 @@ void sA_sA_emptyCell(Move *move, Piece *piece, Block *block, short targetLocatio
   }
 }
 
-void sA_sA_playerPiece(Move *move, Piece *piece, Block *block, short targetLocation, Check *check) {
+void sA_sA_playerPiece(Move *move, void *element, short elementType,
+                       short targetLocation, Check *check) {
   Move *m = move;
-  if (piece != NULL) {
+  if (elementType == PIECE) {
+    Piece *piece = (Piece *)element;
     m->moveType = 6;
     m->piece = piece;
     m->startStandardCell = &standardArea[piece->location];
     m->endStandardCell = &standardArea[targetLocation];
     m->playerPiece = standardArea[targetLocation].piece;
     m->check = *(check);
-  } else if (block != NULL) {
+  } else if (elementType == BLOCK) {
+    Block *block = (Block *)element;
     m->moveType = 15;
     m->block = block;
     m->startStandardCell = &standardArea[block->pieces[0]->location];
@@ -1505,16 +1623,19 @@ void sA_sA_playerPiece(Move *move, Piece *piece, Block *block, short targetLocat
   }
 }
 
-void sA_sA_playerBlock(Move *move, Piece *piece, Block *block, short targetLocation, Check *check) {
+void sA_sA_playerBlock(Move *move, void *element, short elementType,
+                       short targetLocation, Check *check) {
   Move *m = move;
-  if (piece != NULL) {
+  if (elementType == PIECE) {
+    Piece *piece = (Piece *)element;
     m->moveType = 7;
     m->piece = piece;
     m->startStandardCell = &standardArea[piece->location];
     m->endStandardCell = &standardArea[targetLocation];
     m->playerBlock = standardArea[targetLocation].block;
     m->check = *(check);
-  } else if (block != NULL) {
+  } else if (elementType == BLOCK) {
+    Block *block = (Block *)element;
     m->moveType = 16;
     m->block = block;
     m->startStandardCell = &standardArea[block->pieces[0]->location];
@@ -1524,7 +1645,8 @@ void sA_sA_playerBlock(Move *move, Piece *piece, Block *block, short targetLocat
   }
 }
 
-void sA_sA_enemyPiece(Move *move, Piece *piece, Block *block, short targetLocation, Check *check) {
+void sA_sA_enemyPiece(Move *move, Piece *piece, Block *block,
+                      short targetLocation, Check *check) {
   Move *m = move;
   if (piece != NULL) {
     m->moveType = 8;
@@ -1543,7 +1665,8 @@ void sA_sA_enemyPiece(Move *move, Piece *piece, Block *block, short targetLocati
   }
 }
 
-void sA_sA_enemyBlock(Move *move, Block *block, short targetLocation, Check *check) {
+void sA_sA_enemyBlock(Move *move, Block *block, short targetLocation,
+                      Check *check) {
   Move *m = move;
   m->moveType = 18;
   m->block = block;
@@ -1553,7 +1676,8 @@ void sA_sA_enemyBlock(Move *move, Block *block, short targetLocation, Check *che
   m->check = *(check);
 }
 
-void sA_hS_emptyCell(Move *move, Piece *piece, Block *block, short targetLocation) {
+void sA_hS_emptyCell(Move *move, Piece *piece, Block *block,
+                     short targetLocation) {
   Move *m = move;
   if (piece != NULL) {
     m->moveType = 9;
@@ -1568,7 +1692,8 @@ void sA_hS_emptyCell(Move *move, Piece *piece, Block *block, short targetLocatio
   }
 }
 
-void sA_hS_playerPiece(Move *move, Piece *piece, Block *block, short targetLocation) {
+void sA_hS_playerPiece(Move *move, Piece *piece, Block *block,
+                       short targetLocation) {
   Move *m = move;
   if (piece != NULL) {
     m->moveType = 10;
@@ -1586,7 +1711,8 @@ void sA_hS_playerPiece(Move *move, Piece *piece, Block *block, short targetLocat
   return;
 }
 
-void sA_hS_playerBlock(Move *move, Piece *piece, Block *block, short targetLocation) {
+void sA_hS_playerBlock(Move *move, Piece *piece, Block *block,
+                       short targetLocation) {
   Move *m = move;
   if (piece != NULL) {
     m->moveType = 11;
@@ -1623,7 +1749,8 @@ void hS_h(Move *move, Piece *piece, Block *block, char isFromBlock) {
   if (piece != NULL) {
     m->moveType = 13;
     m->piece = piece;
-    m->homeStraightCell = &homeStraights[piece->color->colorNum][piece->location];
+    m->homeStraightCell =
+        &homeStraights[piece->color->colorNum][piece->location];
     m->home = &homes[currentTurnColor];
     m->isFromBlock = isFromBlock;
     if (isFromBlock) {
@@ -1632,7 +1759,8 @@ void hS_h(Move *move, Piece *piece, Block *block, char isFromBlock) {
   } else if (block != NULL) {
     m->moveType = 23;
     m->block = block;
-    m->homeStraightCell = &homeStraights[currentTurnColor][block->pieces[0]->location];
+    m->homeStraightCell =
+        &homeStraights[currentTurnColor][block->pieces[0]->location];
     m->home = &homes[currentTurnColor];
   }
 }
@@ -1641,7 +1769,8 @@ void calculateMoves() {
 
   resetMoves();
 
-  // TODO: refine this function to remove all location to location move assigning functions
+  // TODO: refine this function to remove all location to location move
+  // assigning functions
 
   // === SECTION: calculate moves for pieces ===
   for (short pieceIndex = 0; pieceIndex < PIECE_TOTAL_PER_COLOR; pieceIndex++) {
@@ -1658,14 +1787,14 @@ void calculateMoves() {
 
     // check for mystery cell effects
     switch (piece->mysteryEffect) {
-      case 1:
-        continue;
-      case 2:
-        moveValue *= 2;
-        break;
-      case 3:
-        moveValue /= 2;
-        break;
+    case 1:
+      continue;
+    case 2:
+      moveValue *= 2;
+      break;
+    case 3:
+      moveValue /= 2;
+      break;
     }
 
     if (moveValue == 0) {
@@ -1677,19 +1806,23 @@ void calculateMoves() {
       if (standardArea[piece->startingCell].pieceCount == 0) {
         b_sA_emptyCell(&moves[++moveIndex], piece);
       } else if (standardArea[piece->startingCell].piece != NULL) {
-        if (standardArea[piece->startingCell].piece->color->colorNum == currentTurnColor) {
+        if (standardArea[piece->startingCell].piece->color->colorNum ==
+            currentTurnColor) {
           b_sA_playerPiece(&moves[++moveIndex], piece);
-        } else if (standardArea[piece->startingCell].piece->color->colorNum != currentTurnColor) {
+        } else if (standardArea[piece->startingCell].piece->color->colorNum !=
+                   currentTurnColor) {
           b_sA_enemyPiece(&moves[++moveIndex], piece);
         }
       } else if (standardArea[piece->startingCell].block != NULL &&
-                 standardArea[piece->startingCell].block->color->colorNum == currentTurnColor) {
+                 standardArea[piece->startingCell].block->color->colorNum ==
+                     currentTurnColor) {
         b_sA_playerBlock(&moves[++moveIndex], piece);
       }
     } else if (locationType == STANDARD_AREA) {
       Check check = nextCellsInspection(piece, NULL, moveValue);
 
-      if (check.doesPieceOrBlockPassApproach == TRUE && isEligibleForHomeStraight(piece, NULL)) {
+      if (check.doesPieceOrBlockPassApproach == TRUE &&
+          isEligibleForHomeStraight(piece, NULL)) {
         if (moveValue - check.distanceToApproach == 6) {
           // standardArea --> home
           sA_H(&moves[++moveIndex], piece, NULL);
@@ -1704,10 +1837,12 @@ void calculateMoves() {
         if (homeStraights[currentTurnColor][moveLeft - 1].pieceCount == 0) {
           // empty cell
           sA_hS_emptyCell(&moves[++moveIndex], piece, NULL, moveLeft - 1);
-        } else if (homeStraights[currentTurnColor][moveLeft - 1].pieceCount == 1) {
+        } else if (homeStraights[currentTurnColor][moveLeft - 1].pieceCount ==
+                   1) {
           // same color piece, create block
           sA_hS_playerPiece(&moves[++moveIndex], piece, NULL, moveLeft - 1);
-        } else if (homeStraights[currentTurnColor][moveLeft - 1].pieceCount > 2) {
+        } else if (homeStraights[currentTurnColor][moveLeft - 1].pieceCount >
+                   2) {
           // same color block, expand block
           sA_hS_playerBlock(&moves[++moveIndex], piece, NULL, moveLeft - 1);
         }
@@ -1717,30 +1852,39 @@ void calculateMoves() {
       else {
         // moveValue evaluation
         if (check.doesPieceOrBlockMeetBlock == TRUE) {
-          moveValue = check.distanceToBlock - 1 + 2 * (short)piece->movingDirection;
+          moveValue =
+              check.distanceToBlock - 1 + 2 * (short)piece->movingDirection;
           if (moveValue == 0)
             continue;
         } else if (piece->movingDirection == COUNTER_CLOCKWISE) {
           moveValue *= -1;
         }
 
-        short nextLocation = (piece->location + moveValue + MAX_STANDARD_CELLS) % MAX_STANDARD_CELLS;
+        short nextLocation =
+            (piece->location + moveValue + MAX_STANDARD_CELLS) %
+            MAX_STANDARD_CELLS;
 
         if (standardArea[nextLocation].pieceCount == 0) {
           // empty cell
-          sA_sA_emptyCell(&moves[++moveIndex], piece, NULL, nextLocation, &check);
+          sA_sA_emptyCell(&moves[++moveIndex], piece, PIECE, nextLocation,
+                          &check);
         } else if (standardArea[nextLocation].pieceCount == 1) {
-          if (standardArea[nextLocation].piece->color->colorNum == currentTurnColor) {
+          if (standardArea[nextLocation].piece->color->colorNum ==
+              currentTurnColor) {
             // player piece, create block
-            sA_sA_playerPiece(&moves[++moveIndex], piece, NULL, nextLocation, &check);
+            sA_sA_playerPiece(&moves[++moveIndex], piece, PIECE, nextLocation,
+                              &check);
           } else {
             // enemy piece, capture piece
-            sA_sA_enemyPiece(&moves[++moveIndex], piece, NULL, nextLocation, &check);
+            sA_sA_enemyPiece(&moves[++moveIndex], piece, NULL, nextLocation,
+                             &check);
           }
         } else if (standardArea[nextLocation].pieceCount > 1 &&
-                   standardArea[nextLocation].block->color->colorNum == currentTurnColor) {
+                   standardArea[nextLocation].block->color->colorNum ==
+                       currentTurnColor) {
           // same color block, expand block
-          sA_sA_playerBlock(&moves[++moveIndex], piece, NULL, nextLocation, &check);
+          sA_sA_playerBlock(&moves[++moveIndex], piece, PIECE, nextLocation,
+                            &check);
         }
       }
     }
@@ -1768,14 +1912,14 @@ void calculateMoves() {
 
     // check for mystery cell effects
     switch (block->mysteryEffect) {
-      case 1:
-        continue;
-      case 2:
-        moveValue *= 2;
-        break;
-      case 3:
-        moveValue /= 2;
-        break;
+    case 1:
+      continue;
+    case 2:
+      moveValue *= 2;
+      break;
+    case 3:
+      moveValue /= 2;
+      break;
     }
 
     short moveBlockValue = moveValue / block->pieceCount;
@@ -1788,7 +1932,8 @@ void calculateMoves() {
 
     if (locationType == STANDARD_AREA) {
 
-      if (isEligibleForHomeStraight(NULL, block) && check.doesPieceOrBlockPassApproach == TRUE) {
+      if (isEligibleForHomeStraight(NULL, block) &&
+          check.doesPieceOrBlockPassApproach == TRUE) {
         // standardArea --> home
         if (moveBlockValue - check.distanceToApproach == 6) {
           sA_H(&moves[++moveIndex], NULL, block);
@@ -1802,10 +1947,12 @@ void calculateMoves() {
         if (homeStraights[currentTurnColor][moveLeft - 1].pieceCount == 0) {
           // empty cell
           sA_hS_emptyCell(&moves[++moveIndex], NULL, block, moveLeft - 1);
-        } else if (homeStraights[currentTurnColor][moveLeft - 1].pieceCount == 1) {
+        } else if (homeStraights[currentTurnColor][moveLeft - 1].pieceCount ==
+                   1) {
           // same color piece, expand block
           sA_hS_playerPiece(&moves[++moveIndex], NULL, block, moveLeft - 1);
-        } else if (homeStraights[currentTurnColor][moveLeft - 1].pieceCount > 1) {
+        } else if (homeStraights[currentTurnColor][moveLeft - 1].pieceCount >
+                   1) {
           // same color block, expand block
           sA_hS_playerBlock(&moves[++moveIndex], NULL, block, moveLeft - 1);
         }
@@ -1816,7 +1963,8 @@ void calculateMoves() {
           if (check.canCaptureBlock == TRUE) {
             moveBlockValue = check.distanceToBlock;
           } else {
-            moveBlockValue = check.distanceToBlock - 1 + 2 * block->movingDirection;
+            moveBlockValue =
+                check.distanceToBlock - 1 + 2 * block->movingDirection;
           }
 
           if (moveBlockValue == 0)
@@ -1825,23 +1973,31 @@ void calculateMoves() {
           moveBlockValue *= -1;
         }
 
-        short nextLocation = (block->pieces[0]->location + moveBlockValue + MAX_STANDARD_CELLS) % MAX_STANDARD_CELLS;
+        short nextLocation =
+            (block->pieces[0]->location + moveBlockValue + MAX_STANDARD_CELLS) %
+            MAX_STANDARD_CELLS;
 
         if (standardArea[nextLocation].pieceCount == 0) {
           // empty cell
-          sA_sA_emptyCell(&moves[++moveIndex], NULL, block, nextLocation, &check);
+          sA_sA_emptyCell(&moves[++moveIndex], block, BLOCK, nextLocation,
+                          &check);
         } else if (standardArea[nextLocation].piece != NULL) {
-          if (standardArea[nextLocation].piece->color->colorNum == currentTurnColor) {
+          if (standardArea[nextLocation].piece->color->colorNum ==
+              currentTurnColor) {
             // player piece, expand block
-            sA_sA_playerPiece(&moves[++moveIndex], NULL, block, nextLocation, &check);
+            sA_sA_playerPiece(&moves[++moveIndex], block, BLOCK, nextLocation,
+                              &check);
           } else {
             // enemy piece, capture piece
-            sA_sA_enemyPiece(&moves[++moveIndex], NULL, block, nextLocation, &check);
+            sA_sA_enemyPiece(&moves[++moveIndex], NULL, block, nextLocation,
+                             &check);
           }
         } else if (standardArea[nextLocation].block != NULL) {
-          if (standardArea[nextLocation].block->color->colorNum == currentTurnColor) {
+          if (standardArea[nextLocation].block->color->colorNum ==
+              currentTurnColor) {
             // player block, expand block
-            sA_sA_playerBlock(&moves[++moveIndex], NULL, block, nextLocation, &check);
+            sA_sA_playerBlock(&moves[++moveIndex], block, BLOCK, nextLocation,
+                              &check);
           } else {
             // enemy block, capture
             sA_sA_enemyBlock(&moves[++moveIndex], block, nextLocation, &check);
@@ -1857,7 +2013,8 @@ void calculateMoves() {
       if (moveBlockValue == cellCountToHome) {
         hS_h(&moves[++moveIndex], NULL, block, TRUE);
       } else if (moveValue == cellCountToHome) {
-        hS_h(&moves[++moveIndex], block->pieces[block->pieceCount - 1], NULL, TRUE);
+        hS_h(&moves[++moveIndex], block->pieces[block->pieceCount - 1], NULL,
+             TRUE);
       }
     }
   }
@@ -1878,528 +2035,608 @@ void moveExecute(Move *move) {
   short moveValue;
   char movingDirection;
 
-  // TODO: this is redundant calculation, try to feed the values from previous function call
-  if (m->startStandardCell != NULL && m->endStandardCell != NULL && (m->piece != NULL || m->block != NULL)) {
+  // TODO: this is redundant calculation, try to feed the values from previous
+  // function call
+  if (m->startStandardCell != NULL && m->endStandardCell != NULL &&
+      (m->piece != NULL || m->block != NULL)) {
     if (m->piece != NULL) {
       movingDirection = m->piece->movingDirection;
     } else if (m->block != NULL) {
       movingDirection = m->block->movingDirection;
     }
     if (movingDirection == CLOCKWISE) {
-      moveValue =
-          (m->endStandardCell->cellIndex - m->startStandardCell->cellIndex + MAX_STANDARD_CELLS) % MAX_STANDARD_CELLS;
+      moveValue = (m->endStandardCell->cellIndex -
+                   m->startStandardCell->cellIndex + MAX_STANDARD_CELLS) %
+                  MAX_STANDARD_CELLS;
     } else {
-      moveValue =
-          -(m->endStandardCell->cellIndex - m->startStandardCell->cellIndex - MAX_STANDARD_CELLS) % MAX_STANDARD_CELLS;
+      moveValue = -(m->endStandardCell->cellIndex -
+                    m->startStandardCell->cellIndex - MAX_STANDARD_CELLS) %
+                  MAX_STANDARD_CELLS;
     }
   }
 
   switch (m->moveType) {
-    case 0: { // no move
-      if (moveIndex == 0) {
-        printf("%s has no valid moves. Skipping Turn\n", colors[currentTurnColor].colorName);
-      } else {
-        printf("%s chooses no moves.\n", colors[currentTurnColor].colorName);
-      }
-      break;
+  case 0: { // no move
+    if (moveIndex == 0) {
+      printf("%s has no valid moves. Skipping Turn\n",
+             colors[currentTurnColor].colorName);
+    } else {
+      printf("%s chooses no moves.\n", colors[currentTurnColor].colorName);
     }
+    break;
+  }
 
-      // === SECTION: piece related movement ===
+    // === SECTION: piece related movement ===
 
-    case 1: { // base => standardArea (empty cell)
-      gameInProgress = TRUE;
-      m->base->pieces[m->piece->pieceNum] = NULL;
-      m->base->pieceCount--;
-      m->endStandardCell->pieceCount++;
-      m->endStandardCell->piece = m->piece;
-      m->piece->movingDirection = coinToss();
-      m->piece->location = m->piece->startingCell;
-      m->piece->locationType = STANDARD_AREA;
-      printf("%s player moves piece %s to the starting point.\n", m->piece->color->colorName, m->piece->name);
-      printf("%s tosses %s and %s will move in %s direction\n", m->piece->color->colorName,
-             coinTossNames[m->piece->movingDirection], m->piece->name, movingDirectionNames[m->piece->movingDirection]);
-      printf("%s has %d/4 of pieces on the board and %d/4 pieces on the base.\n", m->piece->color->colorName,
-             m->base->pieceCount, 4 - m->base->pieceCount);
-      break;
+  case 1: { // base => standardArea (empty cell)
+    gameInProgress = TRUE;
+    m->base->pieces[m->piece->pieceNum] = NULL;
+    m->base->pieceCount--;
+    m->endStandardCell->pieceCount++;
+    m->endStandardCell->piece = m->piece;
+    m->piece->movingDirection = coinToss();
+    m->piece->location = m->piece->startingCell;
+    m->piece->locationType = STANDARD_AREA;
+    printf("%s player moves piece %s to the starting point.\n",
+           m->piece->color->colorName, m->piece->name);
+    printf("%s tosses %s and %s will move in %s direction\n",
+           m->piece->color->colorName, coinTossNames[m->piece->movingDirection],
+           m->piece->name, movingDirectionNames[m->piece->movingDirection]);
+    printf("%s has %d/4 of pieces on the board and %d/4 pieces on the base.\n",
+           m->piece->color->colorName, m->base->pieceCount,
+           4 - m->base->pieceCount);
+    break;
+  }
+  case 2: { // base => standardArea (player piece, create block)
+    createBlock(m->piece, m->playerPiece, m->endStandardCell, STANDARD_AREA);
+    b = m->endStandardCell->block;
+
+    m->piece->movingDirection = coinToss();
+    m->base->pieceCount--;
+    m->base->pieces[m->piece->pieceNum] = NULL;
+
+    printf("%s player moves piece %s to the starting point\n",
+           m->piece->color->colorName, m->piece->name);
+    printf("%s landed on %s and created a block of %d.\n", m->piece->name,
+           m->playerPiece->name, b->pieceCount);
+    printf("The block has the longest distance from home and will move in the "
+           "%s direction.\n",
+           movingDirectionNames[b->movingDirection]);
+    printf("%s tosses %s and %s will move in %s direction (out of block)\n",
+           m->piece->color->colorName, coinTossNames[m->piece->movingDirection],
+           m->piece->name, movingDirectionNames[m->piece->movingDirection]);
+    printf("%s has %d/4 of pieces on the board and %d/4 pieces on the base.\n",
+           m->piece->color->colorName, m->base->pieceCount,
+           4 - m->base->pieceCount);
+    break;
+  }
+  case 3: { // base => standardArea (player block, expand block)
+    expandBlockByPiece(m->piece, m->endStandardCell->block, m->endStandardCell,
+                       STANDARD_AREA);
+    b = m->endStandardCell->block;
+
+    m->piece->movingDirection = coinToss();
+    m->base->pieces[m->piece->pieceNum] = NULL;
+    m->base->pieceCount--;
+
+    printf("%s player moves piece %s to the starting point.\n",
+           m->piece->color->colorName, m->piece->name);
+    printf("%s landed on a block of %d containing ", m->piece->name,
+           b->pieceCount - 1);
+    for (short piece = 0; piece < b->pieceCount - 1; piece++) {
+      printf("%s,", b->pieces[piece]->name);
     }
-    case 2: { // base => standardArea (player piece, create block)
-      createBlock(m->piece, m->playerPiece, m->endStandardCell, STANDARD_AREA);
-      b = m->endStandardCell->block;
-
-      m->piece->movingDirection = coinToss();
-      m->base->pieceCount--;
-      m->base->pieces[m->piece->pieceNum] = NULL;
-
-      printf("%s player moves piece %s to the starting point\n", m->piece->color->colorName, m->piece->name);
-      printf("%s landed on %s and created a block of %d.\n", m->piece->name, m->playerPiece->name, b->pieceCount);
-      printf("The block has the longest distance from home and will move in the "
-             "%s direction.\n",
-             movingDirectionNames[b->movingDirection]);
-      printf("%s tosses %s and %s will move in %s direction (out of block)\n", m->piece->color->colorName,
-             coinTossNames[m->piece->movingDirection], m->piece->name, movingDirectionNames[m->piece->movingDirection]);
-      printf("%s has %d/4 of pieces on the board and %d/4 pieces on the base.\n", m->piece->color->colorName,
-             m->base->pieceCount, 4 - m->base->pieceCount);
-      break;
+    printf("\b and expands it.\n");
+    printf("The block has longest distance from home and will move in the %s "
+           "direction.\n",
+           movingDirectionNames[b->movingDirection]);
+    printf("%s tosses %s and %s will move in %s direction (out of block)\n",
+           m->piece->color->colorName, coinTossNames[m->piece->movingDirection],
+           m->piece->name, movingDirectionNames[m->piece->movingDirection]);
+    printf("%s has %d/4 of pieces on the board and %d/4 pieces on the base.\n",
+           m->piece->color->colorName, m->base->pieceCount,
+           4 - m->base->pieceCount);
+    break;
+  }
+  case 4: { // base => standardArea (enemy piece, eliminate piece)
+    m->base->pieces[m->piece->pieceNum] = NULL;
+    m->base->pieceCount--;
+    m->endStandardCell->piece = m->piece;
+    rebasePiece(m->enemyPiece);
+    m->piece->capturedPieceCount++;
+    m->piece->location = m->piece->startingCell;
+    m->piece->locationType = STANDARD_AREA;
+    m->piece->movingDirection = coinToss();
+    printf("%s player moves piece %s to the starting point.\n",
+           m->piece->color->colorName, m->piece->name);
+    printf("%s landed on %s's %s and captured it.\n", m->piece->name,
+           m->enemyPiece->color->colorName, m->enemyPiece->name);
+    printf("%s tosses %s and %s will move in %s direction\n",
+           m->piece->color->colorName, coinTossNames[m->piece->movingDirection],
+           m->piece->name, movingDirectionNames[m->piece->movingDirection]);
+    printf("%s has %d/4 of pieces on the board and %d/4 pieces on the base.\n",
+           m->piece->color->colorName, m->base->pieceCount,
+           4 - m->base->pieceCount);
+    printf("The player gets another move since it's captured a piece/block.\n");
+    printf("============================\n");
+    diceRolledValue = diceRoll();
+    moveRound();
+    break;
+  }
+  case 5: { // standardArea => standardArea (empty cell)
+    if (m->check.doesPieceOrBlockPassApproach == TRUE) {
+      m->piece->approachPassCount++;
     }
-    case 3: { // base => standardArea (player block, expand block)
-      expandBlockByPiece(m->piece, m->endStandardCell->block, m->endStandardCell, STANDARD_AREA);
-      b = m->endStandardCell->block;
-
-      m->piece->movingDirection = coinToss();
-      m->base->pieces[m->piece->pieceNum] = NULL;
-      m->base->pieceCount--;
-
-      printf("%s player moves piece %s to the starting point.\n", m->piece->color->colorName, m->piece->name);
-      printf("%s landed on a block of %d containing ", m->piece->name, b->pieceCount - 1);
-      for (short piece = 0; piece < b->pieceCount - 1; piece++) {
-        printf("%s,", b->pieces[piece]->name);
-      }
-      printf("\b and expands it.\n");
-      printf("The block has longest distance from home and will move in the %s direction.\n",
-             movingDirectionNames[b->movingDirection]);
-      printf("%s tosses %s and %s will move in %s direction (out of block)\n", m->piece->color->colorName,
-             coinTossNames[m->piece->movingDirection], m->piece->name, movingDirectionNames[m->piece->movingDirection]);
-      printf("%s has %d/4 of pieces on the board and %d/4 pieces on the base.\n", m->piece->color->colorName,
-             m->base->pieceCount, 4 - m->base->pieceCount);
-      break;
+    m->endStandardCell->piece = m->piece;
+    m->endStandardCell->pieceCount++;
+    m->piece->location = m->endStandardCell->cellIndex;
+    m->startStandardCell->piece = NULL;
+    m->startStandardCell->pieceCount--;
+    blockedMessage(m);
+    printf("%s moves %s from standard-area L%d to L%d by %d units in %s "
+           "direction.\n",
+           m->piece->color->colorName, m->piece->name,
+           m->startStandardCell->cellIndex, m->endStandardCell->cellIndex,
+           moveValue, movingDirectionNames[m->piece->movingDirection]);
+    break;
+  }
+  case 6: { // standardArea => standardArea (player piece, create block)
+    if (m->check.doesPieceOrBlockPassApproach == TRUE) {
+      m->piece->approachPassCount++;
     }
-    case 4: { // base => standardArea (enemy piece, eliminate piece)
-      m->base->pieces[m->piece->pieceNum] = NULL;
-      m->base->pieceCount--;
-      m->endStandardCell->piece = m->piece;
-      rebasePiece(m->enemyPiece);
-      m->piece->capturedPieceCount++;
-      m->piece->location = m->piece->startingCell;
-      m->piece->locationType = STANDARD_AREA;
-      m->piece->movingDirection = coinToss();
-      printf("%s player moves piece %s to the starting point.\n", m->piece->color->colorName, m->piece->name);
-      printf("%s landed on %s's %s and captured it.\n", m->piece->name, m->enemyPiece->color->colorName,
-             m->enemyPiece->name);
-      printf("%s tosses %s and %s will move in %s direction\n", m->piece->color->colorName,
-             coinTossNames[m->piece->movingDirection], m->piece->name, movingDirectionNames[m->piece->movingDirection]);
-      printf("%s has %d/4 of pieces on the board and %d/4 pieces on the base.\n", m->piece->color->colorName,
-             m->base->pieceCount, 4 - m->base->pieceCount);
-      printf("The player gets another move since it's captured a piece/block.\n");
+    createBlock(m->piece, m->playerPiece, m->endStandardCell, STANDARD_AREA);
+    b = m->endStandardCell->block;
+
+    m->startStandardCell->piece = NULL;
+    m->startStandardCell->pieceCount--;
+    blockedMessage(m);
+    printf(
+        "%s moves %s from standard-area L%d to L%d by %d units %s direction.\n",
+        m->piece->color->colorName, m->piece->name,
+        m->startStandardCell->cellIndex, m->endStandardCell->cellIndex,
+        moveValue, movingDirectionNames[m->piece->movingDirection]);
+    printf("%s landed on %s and created a block of %d.\n", m->piece->name,
+           m->playerPiece->name, b->pieceCount);
+    printf("The block has the longest distance from home and will move in the "
+           "%s direction.\n",
+           movingDirectionNames[b->movingDirection]);
+    break;
+  }
+  case 7: { // standardArea => standardArea (player block, expand block)
+    if (m->check.doesPieceOrBlockPassApproach == TRUE) {
+      m->piece->approachPassCount++;
+    }
+    expandBlockByPiece(m->piece, m->endStandardCell->block, m->endStandardCell,
+                       STANDARD_AREA);
+    b = m->endStandardCell->block;
+    m->startStandardCell->piece = NULL;
+    m->startStandardCell->pieceCount--;
+
+    blockedMessage(m);
+    printf(
+        "%s moves %s from standard-area L%d to L%d by %d units %s direction.\n",
+        m->piece->color->colorName, m->piece->name,
+        m->startStandardCell->cellIndex, m->endStandardCell->cellIndex,
+        moveValue, movingDirectionNames[m->piece->movingDirection]);
+    printf("%s landed on a block of %d containing ", m->piece->name,
+           b->pieceCount - 1);
+    for (short piece = 0; piece < b->pieceCount - 1; piece++) {
+      printf("%s,", b->pieces[piece]->name);
+    }
+    printf("\b and expanded upon it.\n");
+    printf("The block has longest distance from home and will move in the %s "
+           "direction.\n",
+           movingDirectionNames[b->movingDirection]);
+    break;
+  }
+  case 8: { // standardArea => standardArea (enemy piece, eliminate piece)
+    if (m->check.doesPieceOrBlockPassApproach == TRUE) {
+      m->piece->approachPassCount++;
+    }
+    rebasePiece(m->enemyPiece);
+    m->endStandardCell->piece = m->piece;
+    m->startStandardCell->piece = NULL;
+    m->startStandardCell->pieceCount--;
+    m->piece->capturedPieceCount++;
+    m->piece->location = m->endStandardCell->cellIndex;
+
+    blockedMessage(m);
+    printf(
+        "%s moves %s from standard-area L%d to L%d by %d units %s direction.\n",
+        m->piece->color->colorName, m->piece->name,
+        m->startStandardCell->cellIndex, m->endStandardCell->cellIndex,
+        moveValue, movingDirectionNames[m->piece->movingDirection]);
+    printf("%s landed on %s's %s and captured it.\n", m->piece->name,
+           m->enemyPiece->color->colorName, m->enemyPiece->name);
+    if (isBreakingDown == FALSE) {
+      printf(
+          "The player gets another move since it's captured a piece/block.\n");
       printf("============================\n");
       diceRolledValue = diceRoll();
       moveRound();
-      break;
     }
-    case 5: { // standardArea => standardArea (empty cell)
-      if (m->check.doesPieceOrBlockPassApproach == TRUE) {
-        m->piece->approachPassCount++;
-      }
-      m->endStandardCell->piece = m->piece;
-      m->endStandardCell->pieceCount++;
-      m->piece->location = m->endStandardCell->cellIndex;
-      m->startStandardCell->piece = NULL;
-      m->startStandardCell->pieceCount--;
-      blockedMessage(m);
-      printf("%s moves %s from standard-area L%d to L%d by %d units in %s direction.\n", m->piece->color->colorName,
-             m->piece->name, m->startStandardCell->cellIndex, m->endStandardCell->cellIndex, moveValue,
-             movingDirectionNames[m->piece->movingDirection]);
-      break;
+    break;
+  }
+  case 9: { // standardArea => homeStraight (empty cell)
+    m->homeStraightCell->piece = m->piece;
+    m->homeStraightCell->pieceCount++;
+    m->piece->location = m->homeStraightCell->cellIndex;
+    m->piece->locationType = HOME_STRAIGHT;
+    m->startStandardCell->piece = NULL;
+    m->startStandardCell->pieceCount--;
+    printf("%s moves %s from standard-area L%d to home-straight L%d.\n",
+           m->piece->color->colorName, m->piece->name,
+           m->startStandardCell->cellIndex, m->homeStraightCell->cellIndex);
+    break;
+  }
+  case 10: { // standardArea => homeStraight (player piece, create block)
+    createBlock(m->piece, m->playerPiece, m->homeStraightCell, HOME_STRAIGHT);
+    b = m->homeStraightCell->block;
+    m->startStandardCell->piece = NULL;
+    m->startStandardCell->pieceCount--;
+    printf("%s moves %s from standard-area L%d to home-straight L%d.\n",
+           m->piece->color->colorName, m->piece->name,
+           m->startStandardCell->cellIndex, m->homeStraightCell->cellIndex);
+    printf("%s landed on %s and created a block of %d.\n", m->piece->name,
+           m->playerPiece->name, b->pieceCount);
+    printf("The block has the longest distance from home and will move in the "
+           "%s direction.\n",
+           movingDirectionNames[b->movingDirection]);
+    break;
+  }
+  case 11: { // standardArea => homeStraight (player block, expand block)
+    expandBlockByPiece(m->piece, m->homeStraightCell->block,
+                       m->homeStraightCell, HOME_STRAIGHT);
+    b = m->homeStraightCell->block;
+    m->startStandardCell->piece = NULL;
+    m->startStandardCell->pieceCount--;
+    printf("%s moves %s from standard-area L%d to home-straight L%d.\n",
+           m->piece->color->colorName, m->piece->name,
+           m->startStandardCell->cellIndex, m->homeStraightCell->cellIndex);
+    printf("%s landed on a block of %d containing ", m->piece->name,
+           b->pieceCount - 1);
+    for (short piece = 0; piece < b->pieceCount - 1; piece++) {
+      printf("%s,", b->pieces[piece]->name);
     }
-    case 6: { // standardArea => standardArea (player piece, create block)
-      if (m->check.doesPieceOrBlockPassApproach == TRUE) {
-        m->piece->approachPassCount++;
-      }
-      createBlock(m->piece, m->playerPiece, m->endStandardCell, STANDARD_AREA);
-      b = m->endStandardCell->block;
+    printf("\b and expands it.\n");
+    printf("The block has longest distance from home and will move in the %s "
+           "direction.\n",
+           movingDirectionNames[b->movingDirection]);
+    break;
+  }
+  case 12: { // standardArea => home
+    m->home->pieces[m->piece->pieceNum] = m->piece;
+    m->home->pieceCount++;
+    m->piece->location = 0;
+    m->piece->locationType = HOME;
+    m->startStandardCell->piece = NULL;
+    m->startStandardCell->pieceCount--;
+    printf("%s moved %s from standard-area L%d to home.\n",
+           m->piece->color->colorName, m->piece->name,
+           m->startStandardCell->cellIndex);
+    printf("Now there are %d/4 pieces in home.\n", m->home->pieceCount);
 
-      m->startStandardCell->piece = NULL;
-      m->startStandardCell->pieceCount--;
-      blockedMessage(m);
-      printf("%s moves %s from standard-area L%d to L%d by %d units %s direction.\n", m->piece->color->colorName,
-             m->piece->name, m->startStandardCell->cellIndex, m->endStandardCell->cellIndex, moveValue,
-             movingDirectionNames[m->piece->movingDirection]);
-      printf("%s landed on %s and created a block of %d.\n", m->piece->name, m->playerPiece->name, b->pieceCount);
-      printf("The block has the longest distance from home and will move in the %s direction.\n",
-             movingDirectionNames[b->movingDirection]);
-      break;
+    if (m->home->pieceCount == 4) {
+      players[currentTurnColor].isWinner = TRUE;
+      winners[winnerCount] = &players[currentTurnColor];
+      winnerCount++;
+      printf("%s wins!!!\n", colors[currentTurnColor].colorName);
     }
-    case 7: { // standardArea => standardArea (player block, expand block)
-      if (m->check.doesPieceOrBlockPassApproach == TRUE) {
-        m->piece->approachPassCount++;
+    break;
+  }
+  case 13: { // homeStraight => home
+    if (m->isFromBlock == TRUE) {
+      if (m->block->pieceCount == 2) {
+        m->block->pieces[0]->blockNum = NULL;
+        m->homeStraightCell->piece = m->block->pieces[0];
+        m->homeStraightCell->block = NULL;
+        resetBlock(m->block);
+      } else if (m->block->pieceCount > 2) {
+        m->block->pieceCount--;
+        m->block->pieces[m->block->pieceCount] = NULL;
       }
-      expandBlockByPiece(m->piece, m->endStandardCell->block, m->endStandardCell, STANDARD_AREA);
-      b = m->endStandardCell->block;
-      m->startStandardCell->piece = NULL;
-      m->startStandardCell->pieceCount--;
-
-      blockedMessage(m);
-      printf("%s moves %s from standard-area L%d to L%d by %d units %s direction.\n", m->piece->color->colorName,
-             m->piece->name, m->startStandardCell->cellIndex, m->endStandardCell->cellIndex, moveValue,
-             movingDirectionNames[m->piece->movingDirection]);
-      printf("%s landed on a block of %d containing ", m->piece->name, b->pieceCount - 1);
-      for (short piece = 0; piece < b->pieceCount - 1; piece++) {
-        printf("%s,", b->pieces[piece]->name);
-      }
-      printf("\b and expanded upon it.\n");
-      printf("The block has longest distance from home and will move in the %s direction.\n",
-             movingDirectionNames[b->movingDirection]);
-      break;
+      m->piece->blockNum = NULL;
+    } else {
+      m->homeStraightCell->piece = NULL;
     }
-    case 8: { // standardArea => standardArea (enemy piece, eliminate piece)
-      if (m->check.doesPieceOrBlockPassApproach == TRUE) {
-        m->piece->approachPassCount++;
-      }
-      rebasePiece(m->enemyPiece);
-      m->endStandardCell->piece = m->piece;
-      m->startStandardCell->piece = NULL;
-      m->startStandardCell->pieceCount--;
-      m->piece->capturedPieceCount++;
-      m->piece->location = m->endStandardCell->cellIndex;
-
-      blockedMessage(m);
-      printf("%s moves %s from standard-area L%d to L%d by %d units %s direction.\n", m->piece->color->colorName,
-             m->piece->name, m->startStandardCell->cellIndex, m->endStandardCell->cellIndex, moveValue,
-             movingDirectionNames[m->piece->movingDirection]);
-      printf("%s landed on %s's %s and captured it.\n", m->piece->name, m->enemyPiece->color->colorName,
-             m->enemyPiece->name);
-      if (isBreakingDown == FALSE) {
-        printf("The player gets another move since it's captured a piece/block.\n");
-        printf("============================\n");
-        diceRolledValue = diceRoll();
-        moveRound();
-      }
-      break;
-    }
-    case 9: { // standardArea => homeStraight (empty cell)
-      m->homeStraightCell->piece = m->piece;
-      m->homeStraightCell->pieceCount++;
-      m->piece->location = m->homeStraightCell->cellIndex;
-      m->piece->locationType = HOME_STRAIGHT;
-      m->startStandardCell->piece = NULL;
-      m->startStandardCell->pieceCount--;
-      printf("%s moves %s from standard-area L%d to home-straight L%d.\n", m->piece->color->colorName, m->piece->name,
-             m->startStandardCell->cellIndex, m->homeStraightCell->cellIndex);
-      break;
-    }
-    case 10: { // standardArea => homeStraight (player piece, create block)
-      createBlock(m->piece, m->playerPiece, m->homeStraightCell, HOME_STRAIGHT);
-      b = m->homeStraightCell->block;
-      m->startStandardCell->piece = NULL;
-      m->startStandardCell->pieceCount--;
-      printf("%s moves %s from standard-area L%d to home-straight L%d.\n", m->piece->color->colorName, m->piece->name,
-             m->startStandardCell->cellIndex, m->homeStraightCell->cellIndex);
-      printf("%s landed on %s and created a block of %d.\n", m->piece->name, m->playerPiece->name, b->pieceCount);
-      printf("The block has the longest distance from home and will move in the %s direction.\n",
-             movingDirectionNames[b->movingDirection]);
-      break;
-    }
-    case 11: { // standardArea => homeStraight (player block, expand block)
-      expandBlockByPiece(m->piece, m->homeStraightCell->block, m->homeStraightCell, HOME_STRAIGHT);
-      b = m->homeStraightCell->block;
-      m->startStandardCell->piece = NULL;
-      m->startStandardCell->pieceCount--;
-      printf("%s moves %s from standard-area L%d to home-straight L%d.\n", m->piece->color->colorName, m->piece->name,
-             m->startStandardCell->cellIndex, m->homeStraightCell->cellIndex);
-      printf("%s landed on a block of %d containing ", m->piece->name, b->pieceCount - 1);
-      for (short piece = 0; piece < b->pieceCount - 1; piece++) {
-        printf("%s,", b->pieces[piece]->name);
-      }
-      printf("\b and expands it.\n");
-      printf("The block has longest distance from home and will move in the %s direction.\n",
-             movingDirectionNames[b->movingDirection]);
-      break;
-    }
-    case 12: { // standardArea => home
-      m->home->pieces[m->piece->pieceNum] = m->piece;
-      m->home->pieceCount++;
-      m->piece->location = 0;
-      m->piece->locationType = HOME;
-      m->startStandardCell->piece = NULL;
-      m->startStandardCell->pieceCount--;
-      printf("%s moved %s from standard-area L%d to home.\n", m->piece->color->colorName, m->piece->name,
-             m->startStandardCell->cellIndex);
-      printf("Now there are %d/4 pieces in home.\n", m->home->pieceCount);
-
-      if (m->home->pieceCount == 4) {
-        players[currentTurnColor].isWinner = TRUE;
-        winners[winnerCount] = &players[currentTurnColor];
-        winnerCount++;
-        printf("%s wins!!!\n", colors[currentTurnColor].colorName);
-      }
-      break;
-    }
-    case 13: { // homeStraight => home
-      if (m->isFromBlock == TRUE) {
-        if (m->block->pieceCount == 2) {
-          m->block->pieces[0]->blockNum = NULL;
-          m->homeStraightCell->piece = m->block->pieces[0];
-          m->homeStraightCell->block = NULL;
-          resetBlock(m->block);
-        } else if (m->block->pieceCount > 2) {
-          m->block->pieceCount--;
-          m->block->pieces[m->block->pieceCount] = NULL;
-        }
-        m->piece->blockNum = NULL;
-      } else {
-        m->homeStraightCell->piece = NULL;
-      }
-      m->homeStraightCell->pieceCount--;
-      m->home->pieces[m->piece->pieceNum] = m->piece;
-      m->home->pieceCount++;
-      m->piece->location = 0;
-      m->piece->locationType = HOME;
-      if (m->isFromBlock == TRUE) {
-        printf("%s detached %s from the block at home-straight L%d and moved it to home.\n", m->piece->color->colorName,
-               m->piece->name, m->homeStraightCell->cellIndex);
-      } else {
-        printf("%s moved %s from homestraight to home.\n", m->piece->color->colorName, m->piece->name);
-      }
-      printf("Now there are %d/4 pieces in home.\n", m->home->pieceCount);
-
-      if (m->home->pieceCount == 4) {
-        players[currentTurnColor].isWinner = TRUE;
-        winners[winnerCount] = &players[currentTurnColor];
-        winnerCount++;
-        printf("%s wins!!!\n", colors[currentTurnColor].colorName);
-      }
-      break;
-    }
-
-      // === SECTION: block related movement ===
-
-    case 14: { // standardArea => standardArea (empty cell)
-      for (short piece = 0; piece < m->block->pieceCount; piece++) {
-        if (m->check.doesPieceOrBlockPassApproach == TRUE) {
-          m->block->pieces[piece]->approachPassCount++;
-        }
-        m->block->pieces[piece]->location = m->endStandardCell->cellIndex;
-      }
-      m->endStandardCell->block = m->block;
-      m->endStandardCell->pieceCount = m->block->pieceCount;
-      m->startStandardCell->block = NULL;
-      m->startStandardCell->pieceCount = 0;
-
-      blockedMessage(m);
-      printf("%s moved the block of %d containing ", m->block->color->colorName, m->block->pieceCount);
-      for (short piece = 0; piece < m->block->pieceCount; piece++) {
-        printf("%s,", m->block->pieces[piece]->name);
-      }
-      printf("\b from standard-area L%d to L%d by %d units %s direction.\n", m->startStandardCell->cellIndex,
-             m->endStandardCell->cellIndex, moveValue, movingDirectionNames[m->block->movingDirection]);
-      break;
-    }
-    case 15: { // standardArea => standardArea (player piece, expand block)
-      char *targetCellPieceName = m->playerPiece->name;
-      expandPieceByBlock(m->block, m->playerPiece, m->endStandardCell, STANDARD_AREA);
-      for (short piece = 0; piece < m->block->pieceCount; piece++) {
-        if (m->check.doesPieceOrBlockPassApproach == TRUE) {
-          m->block->pieces[piece]->approachPassCount++;
-        }
-      }
-      m->startStandardCell->block = NULL;
-      m->startStandardCell->pieceCount = 0;
-      blockedMessage(m);
-      printf("%s moved the block of %d containing ", m->block->color->colorName, m->block->pieceCount - 1);
-      for (short piece = 0; piece < m->block->pieceCount - 1; piece++) {
-        printf("%s,", m->block->pieces[piece]->name);
-      }
-      printf("\b from standard-area L%d to L%d by %d units in %s direction.\n", m->startStandardCell->cellIndex,
-             m->endStandardCell->cellIndex, moveValue, movingDirectionNames[movingDirection]);
-      printf("the block landed on %s and the block was expanded.\n", targetCellPieceName);
-      printf("the block has the longest distance from home and will move in the %s direction.\n",
-             movingDirectionNames[m->block->movingDirection]);
-      break;
-    }
-    case 16: { // standardArea => standardArea (player block, expand block)
-      short oldPieceCount = m->block->pieceCount;
-      expandBlockByBlock(m->block, m->endStandardCell->block, m->endStandardCell, STANDARD_AREA);
-      for (short piece = 0; piece < m->block->pieceCount; piece++) {
-        if (m->check.doesPieceOrBlockPassApproach == TRUE) {
-          m->block->pieces[piece]->approachPassCount++;
-        }
-      }
-      m->startStandardCell->block = NULL;
-      m->startStandardCell->pieceCount = 0;
-
-      blockedMessage(m);
-      printf("%s moved the block of %d containing ", m->block->color->colorName, oldPieceCount);
-      for (short piece = oldPieceCount; piece < m->playerBlock->pieceCount; piece++) {
-        printf("%s,", m->endStandardCell->block->pieces[piece]->name);
-      }
-      printf("\b from standard-area L%d to L%d by %d units in %s direction.\n", m->startStandardCell->cellIndex,
-             m->endStandardCell->cellIndex, moveValue, movingDirectionNames[movingDirection]);
-      printf("The block landed on a %s color block containing ", m->playerBlock->color->colorName);
-      for (short piece = 0; piece < oldPieceCount; piece++) {
-        printf("%s,", m->playerBlock->pieces[piece]->name);
-      }
-      printf("\b and the block was expanded.\n");
-      printf("The block has the longest distance from home and will move in the %s direction.\n",
-             movingDirectionNames[m->block->movingDirection]);
-      break;
-    }
-    case 17: { // standardArea => standardArea (enemy piece, eliminate piece)
-      for (short piece = 0; piece < m->block->pieceCount; piece++) {
-        if (m->check.doesPieceOrBlockPassApproach == TRUE) {
-          m->block->pieces[piece]->approachPassCount++;
-        }
-        m->block->pieces[piece]->capturedPieceCount++;
-        m->block->pieces[piece]->location = m->endStandardCell->cellIndex;
-      }
-      m->endStandardCell->block = m->block;
-      m->endStandardCell->piece = NULL;
-      m->endStandardCell->pieceCount = m->block->pieceCount;
-      m->startStandardCell->block = NULL;
-      m->startStandardCell->pieceCount = 0;
-      rebasePiece(m->enemyPiece);
-
-      blockedMessage(m);
-      printf("%s moved the block of %d containing ", m->block->color->colorName, m->block->pieceCount);
-      for (short piece = 0; piece < m->block->pieceCount; piece++) {
-        printf("%s,", m->endStandardCell->block->pieces[piece]->name);
-      }
-      printf("\b from standard-area L%d to L%d by %d units in %s direction.\n", m->startStandardCell->cellIndex,
-             m->endStandardCell->cellIndex, moveValue, movingDirectionNames[m->block->movingDirection]);
-      printf("The block landed on %s's %s and captured it.\n", m->enemyPiece->color->colorName, m->enemyPiece->name);
-      printf("The player gets another move since it's captured a piece/block.\n");
-      printf("============================\n");
-      diceRolledValue = diceRoll();
-      moveRound();
-      break;
-    }
-    case 18: { // standardArea => standardArea (enemy block, eliminate block)
-      Block tempEnemyBlock = *(m->enemyBlock);
-      for (short piece = 0; piece < m->block->pieceCount; piece++) {
-        if (m->check.doesPieceOrBlockPassApproach == TRUE) {
-          m->block->pieces[piece]->approachPassCount++;
-        }
-        m->block->pieces[piece]->location = m->endStandardCell->cellIndex;
-        m->block->pieces[piece]->capturedPieceCount++;
-      }
-      m->endStandardCell->block = m->block;
-      m->endStandardCell->pieceCount = m->block->pieceCount;
-      m->startStandardCell->block = NULL;
-      m->startStandardCell->pieceCount = 0;
-      for (short piece = 0; piece < m->enemyBlock->pieceCount; piece++) {
-        rebasePiece(m->enemyBlock->pieces[piece]);
-      }
-      resetBlock(m->enemyBlock);
-
-      blockedMessage(m);
-      printf("%s moved the block of %d containing ", m->block->color->colorName, m->block->pieceCount);
-      for (short piece = 0; piece < m->block->pieceCount; piece++) {
-        printf("%s,", m->block->pieces[piece]->name);
-      }
-      printf("\b from standard-area L%d to L%d by %d units %s direction.\n", m->startStandardCell->cellIndex,
-             m->endStandardCell->cellIndex, moveValue, movingDirectionNames[m->block->movingDirection]);
-      printf("The block landed on %s's block of %d containing ", tempEnemyBlock.color->colorName,
-             tempEnemyBlock.pieceCount);
-      for (short piece = 0; piece < tempEnemyBlock.pieceCount; piece++) {
-        printf("%s,", tempEnemyBlock.pieces[piece]->name);
-      }
-      printf("\b and captured it.\n");
-      printf("The player gets another move since it's captured a piece/block.\n");
-      printf("============================\n");
-      diceRolledValue = diceRoll();
-      moveRound();
-      break;
-    }
-    case 19: { // standardArea => homeStraight (empty cell)
-      for (short piece = 0; piece < m->block->pieceCount; piece++) {
-        m->block->pieces[piece]->location = m->homeStraightCell->cellIndex;
-        m->block->pieces[piece]->locationType = HOME_STRAIGHT;
-      }
-      m->homeStraightCell->block = m->block;
-      m->homeStraightCell->pieceCount = m->block->pieceCount;
-      m->startStandardCell->block = NULL;
-      m->startStandardCell->pieceCount = 0;
-      printf("%s moved the block of %d containing ", m->block->color->colorName, m->block->pieceCount);
-      for (short piece = 0; piece < m->block->pieceCount; piece++) {
-        printf("%s,", m->block->pieces[piece]->name);
-      }
-      printf("\b from standard-area L%d to home-straight L%d.\n", m->startStandardCell->cellIndex,
+    m->homeStraightCell->pieceCount--;
+    m->home->pieces[m->piece->pieceNum] = m->piece;
+    m->home->pieceCount++;
+    m->piece->location = 0;
+    m->piece->locationType = HOME;
+    if (m->isFromBlock == TRUE) {
+      printf("%s detached %s from the block at home-straight L%d and moved it "
+             "to home.\n",
+             m->piece->color->colorName, m->piece->name,
              m->homeStraightCell->cellIndex);
-      break;
+    } else {
+      printf("%s moved %s from homestraight to home.\n",
+             m->piece->color->colorName, m->piece->name);
     }
-    case 20: { // standardArea => homeStraight (player piece, expand block)
-      expandPieceByBlock(m->block, m->playerPiece, m->homeStraightCell, HOME_STRAIGHT);
-      m->startStandardCell->block = NULL;
-      m->startStandardCell->pieceCount = 0;
-      printf("%s moved the block of %d containing ", m->block->color->colorName, m->block->pieceCount);
-      for (short piece = 0; piece < m->block->pieceCount; piece++) {
-        printf("%s,", m->block->pieces[piece]->name);
-      }
-      printf("\b from standard-area L%d to home-straight L%d.\n", m->startStandardCell->cellIndex,
-             m->homeStraightCell->cellIndex);
-      printf("The block landed on %s and and the block was expanded.\n", m->playerPiece->name);
-      printf("the block has the longest distance from home and will move in the %s direction\n",
-             movingDirectionNames[m->block->movingDirection]);
-      break;
-    }
-    case 21: { // standardArea => homeStraight (player block, expand block)
-      short oldPieceCount = m->block->pieceCount;
-      expandBlockByBlock(m->block, m->playerBlock, m->homeStraightCell, HOME_STRAIGHT);
-      m->startStandardCell->block = NULL;
-      m->startStandardCell->pieceCount = 0;
-      printf("%s moved the block of %d containing ", m->block->color->colorName, oldPieceCount);
-      for (short piece = oldPieceCount; piece < m->playerBlock->pieceCount; piece++) {
-        printf("%s,", m->playerBlock->pieces[piece]->name);
-      }
-      printf("\b from standard-area L%d to home-straight L%d.\n", m->startStandardCell->cellIndex,
-             m->homeStraightCell->cellIndex);
-      printf("The block landed on a %s color block containing ", m->playerBlock->color->colorName);
-      for (short piece = 0; piece < oldPieceCount; piece++) {
-        printf("%s,", m->playerBlock->pieces[piece]->name);
-      }
-      printf("\b and the block was expanded.");
-      break;
-    }
-    case 22: { // standardArea => home
-      for (short piece = 0; piece < m->block->pieceCount; piece++) {
-        m->block->pieces[piece]->location = 0;
-        m->block->pieces[piece]->locationType = HOME;
-        m->home->pieces[m->block->pieces[piece]->color->colorNum] = m->block->pieces[piece];
-      }
-      m->home->pieceCount += m->block->pieceCount;
-      m->startStandardCell->block = NULL;
-      m->startStandardCell->pieceCount = 0;
-      printf("%s moves a block of %d containing ", m->block->color->colorName, m->block->pieceCount);
-      for (short piece = 0; piece < m->block->pieceCount; piece++) {
-        printf("%s,", m->block->pieces[piece]->name);
-      }
-      printf("\b from standard-area L%d to home.\n", m->startStandardCell->cellIndex);
-      printf("Now there are %d/4 pieces in home.\n", m->home->pieceCount);
-      resetBlock(m->block);
+    printf("Now there are %d/4 pieces in home.\n", m->home->pieceCount);
 
-      if (m->home->pieceCount == 4) {
-        players[currentTurnColor].isWinner = TRUE;
-        winners[winnerCount] = &players[currentTurnColor];
-        winnerCount++;
-        printf("%s wins!!!\n", colors[currentTurnColor].colorName);
-      }
-      break;
+    if (m->home->pieceCount == 4) {
+      players[currentTurnColor].isWinner = TRUE;
+      winners[winnerCount] = &players[currentTurnColor];
+      winnerCount++;
+      printf("%s wins!!!\n", colors[currentTurnColor].colorName);
     }
-    case 23: { // homeStraight => home
-      for (short piece = 0; piece < m->block->pieceCount; piece++) {
-        m->block->pieces[piece]->location = 0;
-        m->block->pieces[piece]->locationType = HOME;
-        m->home->pieces[m->block->pieces[piece]->pieceNum] = m->block->pieces[piece];
-      }
-      m->home->pieceCount += m->block->pieceCount;
-      m->homeStraightCell->block = NULL;
-      m->homeStraightCell->pieceCount = 0;
-      printf("%s moves a block of %d containing ", m->block->color->colorName, m->block->pieceCount);
-      for (short piece = 0; piece < m->block->pieceCount; piece++) {
-        printf("%s,", m->block->pieces[piece]->name);
-      }
-      printf("\b from home-straight L%d to home.\n", m->homeStraightCell->cellIndex);
-      printf("Now there are %d/4 pieces in home.\n", m->home->pieceCount);
-      resetBlock(m->block);
+    break;
+  }
 
-      if (m->home->pieceCount == 4) {
-        players[currentTurnColor].isWinner = TRUE;
-        winners[winnerCount] = &players[currentTurnColor];
-        winnerCount++;
-        printf("%s wins!!!\n", colors[currentTurnColor].colorName);
+    // === SECTION: block related movement ===
+
+  case 14: { // standardArea => standardArea (empty cell)
+    for (short piece = 0; piece < m->block->pieceCount; piece++) {
+      if (m->check.doesPieceOrBlockPassApproach == TRUE) {
+        m->block->pieces[piece]->approachPassCount++;
       }
-      break;
+      m->block->pieces[piece]->location = m->endStandardCell->cellIndex;
     }
-    default:
-      break;
+    m->endStandardCell->block = m->block;
+    m->endStandardCell->pieceCount = m->block->pieceCount;
+    m->startStandardCell->block = NULL;
+    m->startStandardCell->pieceCount = 0;
+
+    blockedMessage(m);
+    printf("%s moved the block of %d containing ", m->block->color->colorName,
+           m->block->pieceCount);
+    for (short piece = 0; piece < m->block->pieceCount; piece++) {
+      printf("%s,", m->block->pieces[piece]->name);
+    }
+    printf("\b from standard-area L%d to L%d by %d units %s direction.\n",
+           m->startStandardCell->cellIndex, m->endStandardCell->cellIndex,
+           moveValue, movingDirectionNames[m->block->movingDirection]);
+    break;
+  }
+  case 15: { // standardArea => standardArea (player piece, expand block)
+    char *targetCellPieceName = m->playerPiece->name;
+    expandPieceByBlock(m->block, m->playerPiece, m->endStandardCell,
+                       STANDARD_AREA);
+    for (short piece = 0; piece < m->block->pieceCount; piece++) {
+      if (m->check.doesPieceOrBlockPassApproach == TRUE) {
+        m->block->pieces[piece]->approachPassCount++;
+      }
+    }
+    m->startStandardCell->block = NULL;
+    m->startStandardCell->pieceCount = 0;
+    blockedMessage(m);
+    printf("%s moved the block of %d containing ", m->block->color->colorName,
+           m->block->pieceCount - 1);
+    for (short piece = 0; piece < m->block->pieceCount - 1; piece++) {
+      printf("%s,", m->block->pieces[piece]->name);
+    }
+    printf("\b from standard-area L%d to L%d by %d units in %s direction.\n",
+           m->startStandardCell->cellIndex, m->endStandardCell->cellIndex,
+           moveValue, movingDirectionNames[movingDirection]);
+    printf("the block landed on %s and the block was expanded.\n",
+           targetCellPieceName);
+    printf("the block has the longest distance from home and will move in the "
+           "%s direction.\n",
+           movingDirectionNames[m->block->movingDirection]);
+    break;
+  }
+  case 16: { // standardArea => standardArea (player block, expand block)
+    short oldPieceCount = m->block->pieceCount;
+    expandBlockByBlock(m->block, m->endStandardCell->block, m->endStandardCell,
+                       STANDARD_AREA);
+    for (short piece = 0; piece < m->block->pieceCount; piece++) {
+      if (m->check.doesPieceOrBlockPassApproach == TRUE) {
+        m->block->pieces[piece]->approachPassCount++;
+      }
+    }
+    m->startStandardCell->block = NULL;
+    m->startStandardCell->pieceCount = 0;
+
+    blockedMessage(m);
+    printf("%s moved the block of %d containing ", m->block->color->colorName,
+           oldPieceCount);
+    for (short piece = oldPieceCount; piece < m->playerBlock->pieceCount;
+         piece++) {
+      printf("%s,", m->endStandardCell->block->pieces[piece]->name);
+    }
+    printf("\b from standard-area L%d to L%d by %d units in %s direction.\n",
+           m->startStandardCell->cellIndex, m->endStandardCell->cellIndex,
+           moveValue, movingDirectionNames[movingDirection]);
+    printf("The block landed on a %s color block containing ",
+           m->playerBlock->color->colorName);
+    for (short piece = 0; piece < oldPieceCount; piece++) {
+      printf("%s,", m->playerBlock->pieces[piece]->name);
+    }
+    printf("\b and the block was expanded.\n");
+    printf("The block has the longest distance from home and will move in the "
+           "%s direction.\n",
+           movingDirectionNames[m->block->movingDirection]);
+    break;
+  }
+  case 17: { // standardArea => standardArea (enemy piece, eliminate piece)
+    for (short piece = 0; piece < m->block->pieceCount; piece++) {
+      if (m->check.doesPieceOrBlockPassApproach == TRUE) {
+        m->block->pieces[piece]->approachPassCount++;
+      }
+      m->block->pieces[piece]->capturedPieceCount++;
+      m->block->pieces[piece]->location = m->endStandardCell->cellIndex;
+    }
+    m->endStandardCell->block = m->block;
+    m->endStandardCell->piece = NULL;
+    m->endStandardCell->pieceCount = m->block->pieceCount;
+    m->startStandardCell->block = NULL;
+    m->startStandardCell->pieceCount = 0;
+    rebasePiece(m->enemyPiece);
+
+    blockedMessage(m);
+    printf("%s moved the block of %d containing ", m->block->color->colorName,
+           m->block->pieceCount);
+    for (short piece = 0; piece < m->block->pieceCount; piece++) {
+      printf("%s,", m->endStandardCell->block->pieces[piece]->name);
+    }
+    printf("\b from standard-area L%d to L%d by %d units in %s direction.\n",
+           m->startStandardCell->cellIndex, m->endStandardCell->cellIndex,
+           moveValue, movingDirectionNames[m->block->movingDirection]);
+    printf("The block landed on %s's %s and captured it.\n",
+           m->enemyPiece->color->colorName, m->enemyPiece->name);
+    printf("The player gets another move since it's captured a piece/block.\n");
+    printf("============================\n");
+    diceRolledValue = diceRoll();
+    moveRound();
+    break;
+  }
+  case 18: { // standardArea => standardArea (enemy block, eliminate block)
+    Block tempEnemyBlock = *(m->enemyBlock);
+    for (short piece = 0; piece < m->block->pieceCount; piece++) {
+      if (m->check.doesPieceOrBlockPassApproach == TRUE) {
+        m->block->pieces[piece]->approachPassCount++;
+      }
+      m->block->pieces[piece]->location = m->endStandardCell->cellIndex;
+      m->block->pieces[piece]->capturedPieceCount++;
+    }
+    m->endStandardCell->block = m->block;
+    m->endStandardCell->pieceCount = m->block->pieceCount;
+    m->startStandardCell->block = NULL;
+    m->startStandardCell->pieceCount = 0;
+    for (short piece = 0; piece < m->enemyBlock->pieceCount; piece++) {
+      rebasePiece(m->enemyBlock->pieces[piece]);
+    }
+    resetBlock(m->enemyBlock);
+
+    blockedMessage(m);
+    printf("%s moved the block of %d containing ", m->block->color->colorName,
+           m->block->pieceCount);
+    for (short piece = 0; piece < m->block->pieceCount; piece++) {
+      printf("%s,", m->block->pieces[piece]->name);
+    }
+    printf("\b from standard-area L%d to L%d by %d units %s direction.\n",
+           m->startStandardCell->cellIndex, m->endStandardCell->cellIndex,
+           moveValue, movingDirectionNames[m->block->movingDirection]);
+    printf("The block landed on %s's block of %d containing ",
+           tempEnemyBlock.color->colorName, tempEnemyBlock.pieceCount);
+    for (short piece = 0; piece < tempEnemyBlock.pieceCount; piece++) {
+      printf("%s,", tempEnemyBlock.pieces[piece]->name);
+    }
+    printf("\b and captured it.\n");
+    printf("The player gets another move since it's captured a piece/block.\n");
+    printf("============================\n");
+    diceRolledValue = diceRoll();
+    moveRound();
+    break;
+  }
+  case 19: { // standardArea => homeStraight (empty cell)
+    for (short piece = 0; piece < m->block->pieceCount; piece++) {
+      m->block->pieces[piece]->location = m->homeStraightCell->cellIndex;
+      m->block->pieces[piece]->locationType = HOME_STRAIGHT;
+    }
+    m->homeStraightCell->block = m->block;
+    m->homeStraightCell->pieceCount = m->block->pieceCount;
+    m->startStandardCell->block = NULL;
+    m->startStandardCell->pieceCount = 0;
+    printf("%s moved the block of %d containing ", m->block->color->colorName,
+           m->block->pieceCount);
+    for (short piece = 0; piece < m->block->pieceCount; piece++) {
+      printf("%s,", m->block->pieces[piece]->name);
+    }
+    printf("\b from standard-area L%d to home-straight L%d.\n",
+           m->startStandardCell->cellIndex, m->homeStraightCell->cellIndex);
+    break;
+  }
+  case 20: { // standardArea => homeStraight (player piece, expand block)
+    expandPieceByBlock(m->block, m->playerPiece, m->homeStraightCell,
+                       HOME_STRAIGHT);
+    m->startStandardCell->block = NULL;
+    m->startStandardCell->pieceCount = 0;
+    printf("%s moved the block of %d containing ", m->block->color->colorName,
+           m->block->pieceCount);
+    for (short piece = 0; piece < m->block->pieceCount; piece++) {
+      printf("%s,", m->block->pieces[piece]->name);
+    }
+    printf("\b from standard-area L%d to home-straight L%d.\n",
+           m->startStandardCell->cellIndex, m->homeStraightCell->cellIndex);
+    printf("The block landed on %s and and the block was expanded.\n",
+           m->playerPiece->name);
+    printf("the block has the longest distance from home and will move in the "
+           "%s direction\n",
+           movingDirectionNames[m->block->movingDirection]);
+    break;
+  }
+  case 21: { // standardArea => homeStraight (player block, expand block)
+    short oldPieceCount = m->block->pieceCount;
+    expandBlockByBlock(m->block, m->playerBlock, m->homeStraightCell,
+                       HOME_STRAIGHT);
+    m->startStandardCell->block = NULL;
+    m->startStandardCell->pieceCount = 0;
+    printf("%s moved the block of %d containing ", m->block->color->colorName,
+           oldPieceCount);
+    for (short piece = oldPieceCount; piece < m->playerBlock->pieceCount;
+         piece++) {
+      printf("%s,", m->playerBlock->pieces[piece]->name);
+    }
+    printf("\b from standard-area L%d to home-straight L%d.\n",
+           m->startStandardCell->cellIndex, m->homeStraightCell->cellIndex);
+    printf("The block landed on a %s color block containing ",
+           m->playerBlock->color->colorName);
+    for (short piece = 0; piece < oldPieceCount; piece++) {
+      printf("%s,", m->playerBlock->pieces[piece]->name);
+    }
+    printf("\b and the block was expanded.");
+    break;
+  }
+  case 22: { // standardArea => home
+    for (short piece = 0; piece < m->block->pieceCount; piece++) {
+      m->block->pieces[piece]->location = 0;
+      m->block->pieces[piece]->locationType = HOME;
+      m->home->pieces[m->block->pieces[piece]->color->colorNum] =
+          m->block->pieces[piece];
+    }
+    m->home->pieceCount += m->block->pieceCount;
+    m->startStandardCell->block = NULL;
+    m->startStandardCell->pieceCount = 0;
+    printf("%s moves a block of %d containing ", m->block->color->colorName,
+           m->block->pieceCount);
+    for (short piece = 0; piece < m->block->pieceCount; piece++) {
+      printf("%s,", m->block->pieces[piece]->name);
+    }
+    printf("\b from standard-area L%d to home.\n",
+           m->startStandardCell->cellIndex);
+    printf("Now there are %d/4 pieces in home.\n", m->home->pieceCount);
+    resetBlock(m->block);
+
+    if (m->home->pieceCount == 4) {
+      players[currentTurnColor].isWinner = TRUE;
+      winners[winnerCount] = &players[currentTurnColor];
+      winnerCount++;
+      printf("%s wins!!!\n", colors[currentTurnColor].colorName);
+    }
+    break;
+  }
+  case 23: { // homeStraight => home
+    for (short piece = 0; piece < m->block->pieceCount; piece++) {
+      m->block->pieces[piece]->location = 0;
+      m->block->pieces[piece]->locationType = HOME;
+      m->home->pieces[m->block->pieces[piece]->pieceNum] =
+          m->block->pieces[piece];
+    }
+    m->home->pieceCount += m->block->pieceCount;
+    m->homeStraightCell->block = NULL;
+    m->homeStraightCell->pieceCount = 0;
+    printf("%s moves a block of %d containing ", m->block->color->colorName,
+           m->block->pieceCount);
+    for (short piece = 0; piece < m->block->pieceCount; piece++) {
+      printf("%s,", m->block->pieces[piece]->name);
+    }
+    printf("\b from home-straight L%d to home.\n",
+           m->homeStraightCell->cellIndex);
+    printf("Now there are %d/4 pieces in home.\n", m->home->pieceCount);
+    resetBlock(m->block);
+
+    if (m->home->pieceCount == 4) {
+      players[currentTurnColor].isWinner = TRUE;
+      winners[winnerCount] = &players[currentTurnColor];
+      winnerCount++;
+      printf("%s wins!!!\n", colors[currentTurnColor].colorName);
+    }
+    break;
+  }
+  default:
+    break;
   }
 }
 
@@ -2411,14 +2648,16 @@ void moveRound() {
 
 void displayRound() {
   printf("============================\n");
-  printf("%s player now has %d/4 on pieces on the board and %d/4 pieces on the base.\n",
-         colors[currentTurnColor].colorName, 4 - bases[currentTurnColor].pieceCount,
+  printf("%s player now has %d/4 on pieces on the board and %d/4 pieces on the "
+         "base.\n",
+         colors[currentTurnColor].colorName,
+         4 - bases[currentTurnColor].pieceCount,
          bases[currentTurnColor].pieceCount);
   printf("============================\n");
   printf("Count: %ld\n", count);
   printf("============================\n");
-  //printf("Seed: %ld\n", (long int)seed);
-  //printf("============================\n");
+  printf("Seed: %ld\n", (long int)seed);
+  printf("============================\n");
   printf("Location of pieces: %s\n", colors[currentTurnColor].colorName);
   printf("============================\n");
   for (short piece = 0; piece < PIECE_TOTAL_PER_COLOR; piece++) {
@@ -2456,9 +2695,11 @@ void handleMovesRolls() {
       consecutiveSixRollCount++;
 
       if (consecutiveSixRollCount == 3) {
-        if (blocks[currentTurnColor][0].pieceCount || blocks[currentTurnColor][1].pieceCount) {
+        if (blocks[currentTurnColor][0].pieceCount ||
+            blocks[currentTurnColor][1].pieceCount) {
           Block *block = NULL;
-          for (short blockIndex = 0; blockIndex < MAX_BLOCKS_PER_COLOR; blockIndex++) {
+          for (short blockIndex = 0; blockIndex < MAX_BLOCKS_PER_COLOR;
+               blockIndex++) {
             if (blocks[currentTurnColor][blockIndex].pieceCount > 1) {
               block = &blocks[currentTurnColor][blockIndex];
               break;
@@ -2472,13 +2713,16 @@ void handleMovesRolls() {
             isBreakingDown = FALSE;
           }
         } else {
-          printf("Six is rolled for a third consecutive time, roll is ignored\n");
+          printf(
+              "Six is rolled for a third consecutive time, roll is ignored\n");
         }
 
         break;
       } else {
         moveRound();
-        printf("Six is rolled for %d consecutive time(s), player will get another roll\n", consecutiveSixRollCount);
+        printf("Six is rolled for %d consecutive time(s), player will get "
+               "another roll\n",
+               consecutiveSixRollCount);
         printf("============================\n");
       }
     } else {

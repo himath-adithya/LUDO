@@ -42,9 +42,9 @@ void b_sA_playerPiece(Move*, Piece*); // 2
 void b_sA_playerBlock(Move*, Piece*); // 3
 void b_sA_enemyPiece(Move*, Piece*); // 4
 
-void sA_sA_emptyCell(Move*, Piece*, Block*, short, Check*); // 5, 14
-void sA_sA_playerPiece(Move*, Piece*, Block*, short, Check*); // 6, 15
-void sA_sA_playerBlock(Move*, Piece*, Block*, short, Check*); // 7, 16
+void sA_sA_emptyCell(Move*, void*, short, short, Check*); // 5, 14
+void sA_sA_playerPiece(Move*, void*, short, short, Check*); // 6, 15
+void sA_sA_playerBlock(Move*, void*, short, short, Check*); // 7, 16
 void sA_sA_enemyPiece(Move*, Piece*, Block*, short, Check*); // 8, 17
 void sA_sA_enemyBlock(Move*, Block*, short, Check*); // 17
 
